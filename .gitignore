@@ -1,0 +1,22 @@
+# some netbeans specific files
+nbproject/*
+!project.properties
+!project.xml
+build/*
+nbbuild/*
+dist/*
+nbdist/*
+nbactions.xml
+manifest.mf
+build.xml
+
+# some java specific files
+*.class
+*.jar
+*.war
+*.ear
+
+# general swap/backup files
+*.so
+*.swp
+*.lock
