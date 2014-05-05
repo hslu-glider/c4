@@ -14,10 +14,12 @@
  *  GNU General Public License for more details.
  */
 
+package template;
+
 /**
  *
  * @author ninux
  */
-public class Dummy3 {
+public class Template {
 	
 }
