@@ -20,3 +20,4 @@ build.xml
 *.so
 *.swp
 *.lock
+/templates/netbeans/template/nbproject/private/
