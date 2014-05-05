@@ -26,4 +26,4 @@ Das GUI sollte folgende Funktionalitäten bieten:
   * Es gibt ein Spielfeld
   * Ich sehe, wer gerade am Zug ist
   * Ich sehe, welcher Spieler mit welchem Stein spielt
-  * Optional: Ich kann die Spielfeldgrösse ändern
+  * Optional: Ich kann die Spielfeldgrösse ändern (*wird nicht implementiert*)
