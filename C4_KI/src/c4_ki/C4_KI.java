@@ -26,10 +26,86 @@ package c4_ki;
  */
 public class C4_KI {
 
+    private final static int neg_inf = Integer.MIN_VALUE;
+    private final static int pos_inf = Integer.MAX_VALUE;
+    private int level;
+    private int savedRow;
+    private int actRowKi;
+    private int actRowUser;
+    
+    public C4_KI(int level){
+        this.level = level;
+    }
+    
+    public int KI_makeNextMove(int row_user){
+        int row_ki = 0;
+        alpha_beta_cut();
+        return row_ki;
+    }
+    
+    private int alpha_beta_cut(){
+        savedRow = 0;
+        max(level, neg_inf, pos_inf);
+        return savedRow + 1;
+    }
+
+    private int max(int depth, int alpha, int beta) {    
+        int maxValue;
+        int value;
+        if (depth == 0 || actRowKi == 7){
+            return eval();
+        }
+        maxValue = alpha;    
+        actRowKi = 0;
+        while (actRowKi <= 6) {
+            actRowKi++;
+            value = min(depth - 1, maxValue, beta);       
+            actRowKi--;
+            if (value > maxValue) {
+                maxValue = value;
+                if (maxValue >= beta){          
+                    break;    
+                }
+                if (depth == 0){
+                    savedRow = actRowKi;
+                }
+            }
+        }
+        return maxValue;
+     }
+
+    private int min(int depth, int alpha, int beta) { 
+        int minValue;
+        int value;
+        
+        if (depth == 0 || actRowUser == 7){
+            return eval();
+        }
+        minValue = beta;    
+        actRowUser = 0;
+        while (actRowUser <= 6) {
+            actRowUser++;
+            value = max(depth - 1, alpha, minValue);       
+            actRowUser--;
+            if (value < minValue) {
+                minValue = value;
+                if (minValue <= alpha){
+                    break;
+                }       
+            }
+        }
+        return minValue;
+    }
+
+    private int eval(){
+        return 0;
+    }
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        C4_KI ki = new C4_KI(1);
+        ki.KI_makeNextMove(1);
     }
 }
