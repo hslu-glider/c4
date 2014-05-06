@@ -17,12 +17,13 @@
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-package c4_ki;
+package Opponent;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 /**
- *
  * @author Michael Müller michael.mueller.02@stud.hslu.ch
- * 
  */
 public class C4_KI {
 
@@ -32,22 +33,63 @@ public class C4_KI {
     private int savedRow;
     private int actRowKi;
     private int actRowUser;
-    
+    private Disc gameField[][];
     
     public C4_KI(int level){
         this.level = level;
+        gameField = new Disc[7][6];
+        savedRow = 0;
+        actRowKi = 0;
+        actRowUser = 0;
     }
     
     public int KI_makeNextMove(int row_user){
-        int row_ki = 0;
-        alpha_beta_cut();
-        return row_ki;
+        placeUserDisc(row_user);
+        //alpha_beta_cut();
+        placeKIDisc(savedRow);
+        // Testausgabe --------------------------
+        for(int i = 5; i >= 0; i--){
+            for(int j = 0; j < 7; j++){
+                if(gameField[j][i] != null){
+                    if(gameField[j][i].getDiscPlayer() == Disc.USER){
+                        System.out.print("o ");
+                    }
+                    else if(gameField[j][i].getDiscPlayer() == Disc.KI){
+                        System.out.print("x ");
+                    }
+                }
+                else{
+                    System.out.print("- ");
+                }
+            }
+            System.out.print("\n");
+        }
+        // Testausgabe --------------------------
+        return savedRow;
+    }
+    
+    private void placeUserDisc(int row){
+        for(int i = 0; i < 6; i++){
+            if(gameField[row][i] == null){
+                gameField[row][i] = new Disc(Disc.USER);
+                break;
+            }
+        }
+    }
+    
+    private void placeKIDisc(int row){
+        for(int i = 0; i < 6; i++){
+            if(gameField[row][i] == null){
+                gameField[row][i] = new Disc(Disc.KI);
+                break;
+            }
+        }
     }
     
     private int alpha_beta_cut(){
         savedRow = 0;
         max(level, neg_inf, pos_inf);
-        return savedRow + 1;
+        return savedRow;
     }
 
     private int max(int depth, int alpha, int beta) {    
@@ -57,11 +99,10 @@ public class C4_KI {
             return eval();
         }
         maxValue = alpha;    
-        actRowKi = 0;
+        actRowKi = -1;
         while (actRowKi <= 6) {
             actRowKi++;
             value = min(depth - 1, maxValue, beta);       
-            actRowKi--;
             if (value > maxValue) {
                 maxValue = value;
                 if (maxValue >= beta){          
@@ -83,11 +124,10 @@ public class C4_KI {
             return eval();
         }
         minValue = beta;    
-        actRowUser = 0;
+        actRowUser = -1;
         while (actRowUser <= 6) {
             actRowUser++;
             value = max(depth - 1, alpha, minValue);       
-            actRowUser--;
             if (value < minValue) {
                 minValue = value;
                 if (minValue <= alpha){
@@ -106,7 +146,14 @@ public class C4_KI {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String eingabe = "";
         C4_KI ki = new C4_KI(1);
-        ki.KI_makeNextMove(1);
+        
+        try{
+            eingabe = (char)br.read();
+        }
+        catch
+        ki.KI_makeNextMove(3);
     }
 }
