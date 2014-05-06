@@ -46,7 +46,7 @@ public class C4_KI {
     
     public int KI_makeNextMove(int row_user){
         placeUserDisc(row_user);
-        //alpha_beta_cut();
+        alpha_beta_cut();
         placeKIDisc(savedRow);
         // Testausgabe --------------------------
         for(int i = 5; i >= 0; i--){
@@ -91,10 +91,11 @@ public class C4_KI {
         }
     }
     
-    private int alpha_beta_cut(){
+    private void alpha_beta_cut(){
         savedRow = 0;
+        actRowKi = -1;
+        actRowUser = -1;
         max(level, neg_inf, pos_inf);
-        return savedRow;
     }
 
     private int max(int depth, int alpha, int beta) {    
@@ -104,19 +105,19 @@ public class C4_KI {
             return eval();
         }
         maxValue = alpha;    
-        actRowKi = -1;
+        actRowKi = setNextRow(actRowKi);
         while (actRowKi <= 6) {
-            actRowKi++;
             value = min(depth - 1, maxValue, beta);       
             if (value > maxValue) {
                 maxValue = value;
                 if (maxValue >= beta){          
                     break;    
                 }
-                if (depth == 0){
+                if (depth == level){
                     savedRow = actRowKi;
                 }
             }
+            actRowKi = setNextRow(actRowKi);
         }
         return maxValue;
      }
@@ -129,9 +130,8 @@ public class C4_KI {
             return eval();
         }
         minValue = beta;    
-        actRowUser = -1;
+        actRowUser = setNextRow(actRowUser);
         while (actRowUser <= 6) {
-            actRowUser++;
             value = max(depth - 1, alpha, minValue);       
             if (value < minValue) {
                 minValue = value;
@@ -139,14 +139,26 @@ public class C4_KI {
                     break;
                 }       
             }
+            actRowUser = setNextRow(actRowUser);
         }
         return minValue;
     }
 
     private int eval(){
-        return 0;
+        return (int)(Math.random() * 8);
     }
 
+    private int setNextRow(int actRow){
+        do{
+            actRow++;   
+            if(actRow > 6){
+                break;
+            }
+        }
+        while(gameField[actRow][5] != null);
+        return actRow;
+    }
+    
     /**
      * @param args the command line arguments
      */
