@@ -38,4 +38,52 @@ public class Disc {
     public int getDiscPlayer(){
         return player;
     }
+    
+    public static Disc[][] placeUserDisc(int row, Disc gameField[][]){
+        if(row >= 0 && row < 7){
+            for(int i = 0; i < 6; i++){
+                if(gameField[row][i] == null){
+                    gameField[row][i] = new Disc(Disc.USER);
+                    break;
+                }
+            }
+        }
+        return gameField;
+    }
+    
+    public static Disc[][] placeKIDisc(int row, Disc gameField[][]){
+        if(row >= 0 && row < 7){
+            for(int i = 0; i < 6; i++){
+                if(gameField[row][i] == null){
+                    gameField[row][i] = new Disc(Disc.KI);
+                    break;
+                }
+            }
+        }
+        return gameField;
+    }
+    
+    public static Disc[][] removeUserDisc(int row, Disc gameField[][]){
+        if(row >= 0 && row < 7){
+            for(int i = 5; i >= 0; i--){
+                if(gameField[row][i] != null){
+                    gameField[row][i] = null;
+                    break;
+                }
+            }
+        }
+        return gameField;
+    }
+    
+    public static Disc[][] removeKIDisc(int row, Disc gameField[][]){
+        if(row >= 0 && row < 7){
+            for(int i = 5; i >= 0; i--){
+                if(gameField[row][i] != null){
+                    gameField[row][i] = null;
+                    break;
+                }
+            }
+        }
+        return gameField;
+    }
 }
