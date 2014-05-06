@@ -33,6 +33,7 @@ public class C4_KI {
     private int actRowKi;
     private int actRowUser;
     
+    
     public C4_KI(int level){
         this.level = level;
     }

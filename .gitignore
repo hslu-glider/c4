@@ -21,3 +21,5 @@ build.xml
 *.swp
 *.lock
 /templates/netbeans/template/nbproject/private/
+/C4_KI/nbproject/private/
+/C4_KI/build/
