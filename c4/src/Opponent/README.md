@@ -5,5 +5,5 @@ darf Befehle an das Control senden. Der Opponent besitzt damit viel
 Schnittstellen definiert werden.
 
   * KI (lokaler Gegner)
-  * Entferneter Gegner
+  * Entfernter Gegner
   * Lokaler Spieler
