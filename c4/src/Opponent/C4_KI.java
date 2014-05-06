@@ -20,6 +20,7 @@
 package Opponent;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
@@ -69,19 +70,23 @@ public class C4_KI {
     }
     
     private void placeUserDisc(int row){
-        for(int i = 0; i < 6; i++){
-            if(gameField[row][i] == null){
-                gameField[row][i] = new Disc(Disc.USER);
-                break;
+        if(row >= 0 && row < 7){
+            for(int i = 0; i < 6; i++){
+                if(gameField[row][i] == null){
+                    gameField[row][i] = new Disc(Disc.USER);
+                    break;
+                }
             }
         }
     }
     
     private void placeKIDisc(int row){
-        for(int i = 0; i < 6; i++){
-            if(gameField[row][i] == null){
-                gameField[row][i] = new Disc(Disc.KI);
-                break;
+        if(row >= 0 && row < 7){
+            for(int i = 0; i < 6; i++){
+                if(gameField[row][i] == null){
+                    gameField[row][i] = new Disc(Disc.KI);
+                    break;
+                }
             }
         }
     }
@@ -147,13 +152,24 @@ public class C4_KI {
      */
     public static void main(String[] args) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String eingabe = "";
+        int eingabe = 0;    
         C4_KI ki = new C4_KI(1);
         
+        while(true){
         try{
-            eingabe = (char)br.read();
+            eingabe = br.read() - 48;
         }
-        catch
-        ki.KI_makeNextMove(3);
+        catch (IOException e){}
+        if(eingabe == 9){
+            break;
+        }
+        if(eingabe >= 0 && eingabe < 7){
+            ki.KI_makeNextMove(eingabe);
+        }
+        try{
+            eingabe = br.read() - 48;
+        }
+        catch (IOException e){}
+        }
     }
 }
