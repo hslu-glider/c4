@@ -27,7 +27,7 @@ public class Plot {
     public static void plot_GameField(Disc gameField[][]){
         // Testausgabe --------------------------
         System.out.println("");
-        System.out.println("1 2 3 4 5 6 7");
+        System.out.println("0 1 2 3 4 5 6");
         for(int i = 5; i >= 0; i--){
             for(int j = 0; j < 7; j++){
                 if(gameField[j][i] != null){

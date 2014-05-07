@@ -16,16 +16,14 @@ public class Alpha_Beta_Cut {
     
     private int level;
     private int savedRow;
-    private int actRowKi;
-    private int actRowUser;
     private Disc gameField[][];
+    private MoveNode head;
     
     public Alpha_Beta_Cut(int level, Disc gameField[][]){
         this.level = level;
         this.gameField = gameField;
         savedRow = 0;
-        actRowKi = -1;
-        actRowUser = -1;
+        head = null;
     }
     
     public void updateGameField(Disc gF[][]){
@@ -34,13 +32,83 @@ public class Alpha_Beta_Cut {
     
     public int getNextRow(){
         savedRow = 0;
-        actRowKi = -1;
-        actRowUser = -1;
-        max(level, neg_inf, pos_inf);
+        head = new MoveNode(0);
+        max(level, neg_inf, pos_inf, head);
         return savedRow;
     }
+        
+    private int max(int depth, int alpha, int beta, MoveNode node) {    
+        int maxValue;
+        int value;
+        if (depth == 0){
+            return Eval.eval(gameField);
+        }
+        maxValue = alpha;    
+        generateMoves(node);
+        for(int i = 0; i < 7; i++) {
+            if(node.moveRow[i] != null){
+                gameField = Disc.placeKIDisc(node.moveRow[i].getRow(), gameField);
+                value = min(depth - 1, maxValue, beta, node.getNext(i));   
+                /*-----------------------------*/
+                //Plot.plot_value(node.moveRow[i].getRow(), value);      // for Tests
+                /*-----------------------------*/
+                gameField = Disc.removeKIDisc(node.moveRow[i].getRow(), gameField);
+                if (value > maxValue) {
+                    maxValue = value;
+                    if (maxValue >= beta){          
+                        break;    
+                    }
+                    if (depth == level){
+                        savedRow = node.moveRow[i].getRow();
+                    }
+                }
+            }
+        }
+        return maxValue;
+     }
 
-    private int setNextRow(int actRow){
+    private int min(int depth, int alpha, int beta, MoveNode node) { 
+        int minValue;
+        int value;
+        
+        if (depth == 0){
+            return Eval.eval(gameField);
+        }
+        minValue = beta;    
+        generateMoves(node);
+        for(int i = 0; i < 7; i++) {
+            if(node.moveRow[i] != null){
+                gameField = Disc.placeUserDisc(node.moveRow[i].getRow(), gameField);
+                value = max(depth - 1, alpha, minValue, node.getNext(i)); 
+                gameField = Disc.removeUserDisc(node.moveRow[i].getRow(), gameField);
+                if (value < minValue) {
+                    minValue = value;
+                    if (minValue <= alpha){
+                        break;
+                    }       
+                }
+            }
+        }
+        return minValue;
+    }
+    
+    public void generateMoves(MoveNode node){
+        for(int i = 0; i < 7; i++) {
+            if(node.moveRow[i] == null){     
+                if(gameField[i][5] == null){
+                    node.moveRow[i] = new MoveNode(i);
+                }
+            }
+            else{
+                generateMoves(node.getNext(i));
+            }
+        }
+    }
+}
+
+
+/*
+ *     private int setNextRow(int actRow){
         do{
             actRow++;   
             if(actRow > 6){
@@ -50,8 +118,8 @@ public class Alpha_Beta_Cut {
         while(gameField[actRow][5] != null);
         return actRow;
     }
-        
-    private int max(int depth, int alpha, int beta) {    
+    * 
+ * private int max(int depth, int alpha, int beta) {    
         int maxValue;
         int value;
         if (depth == 0 || actRowKi == 7){
@@ -62,7 +130,9 @@ public class Alpha_Beta_Cut {
         while (actRowKi <= 6) {
             gameField = Disc.placeKIDisc(actRowKi, gameField);
             value = min(depth - 1, maxValue, beta);   
+        
             Plot.plot_value(actRowKi, value);      // for Tests
+    
             gameField = Disc.removeKIDisc(actRowKi, gameField);
             if (value > maxValue) {
                 maxValue = value;
@@ -101,4 +171,4 @@ public class Alpha_Beta_Cut {
         }
         return minValue;
     }
-}
+ */

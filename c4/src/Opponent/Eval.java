@@ -10,20 +10,76 @@ package Opponent;
  * @stud.hslu.ch
  */
 public class Eval {
+    private final static int ROWS = 7;
+    private final static int COLS = 6;
     
     public static int eval(Disc gameField[][]){
-        int sum = 0;
-        int user = 0;
-        int none_ki = 0;
-        int none_user = 0;
+        int sum;
+        int sum_ki = 0;
+        int sum_user = 0;
         int ki = 0;
-        int user_sum = 0;
-        int ki_sum = 0;
-        int ki_end = 0;     // Züge zum beenden
-        int user_end = 0;
-        //sum = (int)(Math.random() * 7);       // Random-KI
+        int user = 0;
+                
+        sum = (int)(Math.random() * ROWS);       // Random-KI
+        for(int i = 0; i < ROWS; i++){
+            for(int j = 0; j < COLS; j++){
+                if(gameField[i][j] != null){
+                    if(gameField[i][j].getDiscPlayer() == Disc.KI){
+                        ki++;
+                        if(ki == 4){
+                            sum_ki = 1000;
+                        }
+                        user = 0;
+                    }
+                    else if(gameField[i][j].getDiscPlayer() == Disc.USER){
+                        user++;
+                        if(user == 4){
+                            sum_user = 1000;
+                        }
+                        ki = 0;
+                    }
+                }
+                else{
+                    ki = 0;
+                    user = 0;
+                }
+            }
+        }
+        sum = sum + (sum_ki - sum_user); 
+        sum_ki = 0;
+        sum_user = 0;
+        for(int j = 0; j < COLS; j++){
+            for(int i = 0; i < ROWS; i++){
+                if(gameField[i][j] != null){
+                    if(gameField[i][j].getDiscPlayer() == Disc.KI){
+                        ki++;
+                        if(ki == 4){
+                            sum_ki = 1000;
+                        }
+                        user = 0;
+                    }
+                    else if(gameField[i][j].getDiscPlayer() == Disc.USER){
+                        user++;
+                        if(user == 4){
+                            sum_user = 1000;
+                        }
+                        ki = 0;
+                    }
+                }
+                else{
+                    ki = 0;
+                    user = 0;
+                }
+            }
+        }
+        sum = sum + (sum_ki - sum_user); 
+        return sum;
+    }
+}
         
-/*----vertikales Evaluieren----*/
+        
+        /*        
+//----vertikales Evaluieren----
         for(int i = 0; i < 7; i++){
             for(int j = 0; j < 6; j++){
                 if(gameField[i][j] != null){
@@ -85,7 +141,7 @@ public class Eval {
             ki_sum = 0;
             user_sum = 0;
         }
-/*----horizontales Evaluieren----*/
+//----horizontales Evaluieren----
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 7; j++){
                 if(gameField[j][i] != null){
@@ -148,5 +204,5 @@ public class Eval {
             user_sum = 0;
         }
         return sum;
-    }
-}
+    }*/
+
