@@ -14,12 +14,182 @@ public class Eval {
     private final static int COLS = 6;
     
     public static int eval(Disc gameField[][]){
-        int sum;
-        int sum_ki = 0;
-        int sum_user = 0;
-        int ki = 0;
-        int user = 0;
+        int sum = 0;
                 
+        for(int i = 0; i < ROWS; i++){
+            for(int j = 0; j < COLS; j++){
+                sum += getNbrRight(gameField, i, j);
+                sum += getNbrDiagRight(gameField, i, j);
+                sum += getNbrUp(gameField, i, j);
+                sum += getNbrDiagLeft(gameField, i, j);
+            }
+        }
+        return sum;
+    }
+    
+    private static int getNbrRight(Disc gameField[][], int row, int col){
+        int sum = 0;
+        if(row <= 3 && gameField[row][col] != null){
+            if(gameField[row][col].getDiscPlayer() == Disc.KI){
+                do{
+                    row++;
+                    sum++;
+                    if(sum == 4){
+                        sum = 1000;
+                    }
+                    if(row < 7){
+                        break;
+                    }
+                    if(gameField[row][col] == null){
+                        break;
+                    }
+                }
+                while(gameField[row][col].getDiscPlayer() == Disc.KI);
+            }
+            else if(gameField[row][col].getDiscPlayer() == Disc.USER){
+                do{
+                    row++;
+                    sum--;
+                    if(sum == -4){
+                        sum = -1000;
+                    }
+                    if(row < 7){
+                        break;
+                    }
+                    if(gameField[row][col] == null){
+                        break;
+                    }
+                }
+                while(gameField[row][col].getDiscPlayer() == Disc.USER);               
+            }
+        }
+        return sum;
+    }
+    
+    private static int getNbrDiagRight(Disc gameField[][], int row, int col){
+        int sum = 0;
+        if(row <= 3 && col <= 4 && gameField[row][col] != null){
+            if(gameField[row][col].getDiscPlayer() == Disc.KI){
+                do{
+                    row++;
+                    col++;
+                    sum++;
+                    if(sum == 4){
+                        sum = 1000;
+                    }
+                    if(row < 7){
+                        break;
+                    }
+                    if(gameField[row][col] == null){
+                        break;
+                    }
+                }
+                while(gameField[row][col].getDiscPlayer() == Disc.KI);
+            }
+            else if(gameField[row][col].getDiscPlayer() == Disc.USER){
+                do{
+                    row++;
+                    col++;
+                    sum--;
+                    if(sum == -4){
+                        sum = -1000;
+                    }
+                    if(row < 7){
+                        break;
+                    }
+                    if(gameField[row][col] == null){
+                        break;
+                    }
+                }
+                while(gameField[row][col].getDiscPlayer() == Disc.USER);               
+            }
+        }
+        return sum;
+    }
+
+    private static int getNbrUp(Disc gameField[][], int row, int col){
+        int sum = 0;
+        if(col <= 2 && gameField[row][col] != null){
+            if(gameField[row][col].getDiscPlayer() == Disc.KI){
+                do{
+                    col++;
+                    sum++;
+                    if(sum == 4){
+                        sum = 1000;
+                    }
+                    if(col < 6){
+                        break;
+                    }
+                    if(gameField[row][col] == null){
+                        break;
+                    }
+                }
+                while(gameField[row][col].getDiscPlayer() == Disc.KI);
+            }
+            else if(gameField[row][col].getDiscPlayer() == Disc.USER){
+                do{
+                    col++;  
+                    sum--;
+                    if(sum == -4){
+                        sum = -1000;
+                    }
+                    if(col < 6){
+                        break;
+                    }
+                    if(gameField[row][col] == null){
+                        break;
+                    }
+                }
+                while(gameField[row][col].getDiscPlayer() == Disc.USER);               
+            }
+        }
+        return sum;
+    }
+    
+    private static int getNbrDiagLeft(Disc gameField[][], int row, int col){
+        int sum = 0;
+        if(row >= 3 && col >= 4 && gameField[row][col] != null){
+            if(gameField[row][col].getDiscPlayer() == Disc.KI){
+                do{
+                    row--;
+                    col++;
+                    sum++;
+                    if(sum == 4){
+                        sum = 1000;
+                    }
+                    if(col < 6){
+                        break;
+                    }
+                    if(gameField[row][col] == null){
+                        break;
+                    }
+                }
+                while(gameField[row][col].getDiscPlayer() == Disc.KI);
+            }
+            else if(gameField[row][col].getDiscPlayer() == Disc.USER){
+                do{
+                    row--;
+                    col++;
+                    sum--;
+                    if(sum == -4){
+                        sum = -1000;
+                    }
+                    if(col < 6){
+                        break;
+                    }
+                    if(gameField[row][col] == null){
+                        break;
+                    }
+                }
+                while(gameField[row][col].getDiscPlayer() == Disc.USER);               
+            }
+        }
+        return sum;
+    }
+}
+   
+    //Random KI
+ /*       
         sum = (int)(Math.random() * ROWS);       // Random-KI
         for(int i = 0; i < ROWS; i++){
             for(int j = 0; j < COLS; j++){
@@ -75,134 +245,4 @@ public class Eval {
         sum = sum + (sum_ki - sum_user); 
         return sum;
     }
-}
-        
-        
-        /*        
-//----vertikales Evaluieren----
-        for(int i = 0; i < 7; i++){
-            for(int j = 0; j < 6; j++){
-                if(gameField[i][j] != null){
-                    if(gameField[i][j].getDiscPlayer() == Disc.KI){
-                        if(user_end == 4){
-                            user_sum = 1000;            // nur 1000 um Overflow zu vermeiden
-                        }
-                        else if(user + none_user >= 4){           //es muss eine Viererreihe möglich sein
-                            if(user * 5 + none_user > user_sum){    // Gewichtung
-                                user_sum = user * 5 + none_user;
-                            }
-                        }
-                        user = 0;
-                        user_end = 0;
-                        none_user = 0;
-                        ki++;
-                        ki_end++;
-                    }
-                    else if(gameField[i][j].getDiscPlayer() == Disc.USER){
-                        if(ki_end == 4){
-                            ki_sum = 1000;
-                        }
-                        else if(ki + none_ki >= 4){
-                            if(ki * 5 + none_ki > ki_sum){
-                                ki_sum = ki * 5 + none_ki;
-                            }
-                        }
-                        ki = 0;
-                        none_ki = 0;
-                        ki_end = 0;
-                        user++;
-                        user_end++;
-                    }
-                }
-                else{
-                    none_ki++;
-                    none_user++;
-                    ki_end = 0;
-                    user_end = 0;
-                }
-            }
-            if(ki + none_ki >= 4){
-                if(ki * 5 + none_ki > ki_sum){
-                    ki_sum = ki * 5 + none_ki;
-                }
-            }
-            if(user + none_user >= 4){
-                if(user * 5 + none_user > user_sum){
-                    user_sum = user * 5 + none_user;
-                }
-            }
-            if(ki_end == 4){
-                ki_sum = 1000;
-            }
-            if(user_end == 4){
-                user_sum = 1000;
-            }
-            sum = sum + (ki_sum - user_sum);
-            ki_sum = 0;
-            user_sum = 0;
-        }
-//----horizontales Evaluieren----
-        for(int i = 0; i < 6; i++){
-            for(int j = 0; j < 7; j++){
-                if(gameField[j][i] != null){
-                    if(gameField[j][i].getDiscPlayer() == Disc.KI){
-                        if(user_end == 4){
-                            user_sum = 1000;
-                        }
-                        else if(user + none_user >= 4){           //es muss eine Viererreihe möglich sein
-                            if(user * 5 + none_user > user_sum){    // Gewichtung
-                                user_sum = user * 5 + none_user;
-                            }
-                        }
-                        user = 0;
-                        user_end = 0;
-                        none_user = 0;
-                        ki++;
-                        ki_end++;
-                    }
-                    else if(gameField[j][i].getDiscPlayer() == Disc.USER){
-                        if(ki_end == 4){
-                            ki_sum = 1000;
-                        }
-                        else if(ki + none_ki >= 4){
-                            if(ki * 5 + none_ki > ki_sum){
-                                ki_sum = ki * 5 + none_ki;
-                            }
-                        }
-                        ki = 0;
-                        none_ki = 0;
-                        ki_end = 0;
-                        user++;
-                        user_end++;
-                    }
-                }
-                else{
-                    none_ki++;
-                    none_user++;
-                    ki_end = 0;
-                    user_end = 0;
-                }
-            }
-            if(ki + none_ki >= 4){
-                if(ki * 5 + none_ki > ki_sum){
-                    ki_sum = ki * 5 + none_ki;
-                }
-            }
-            if(user + none_user >= 4){
-                if(user * 5 + none_user > user_sum){
-                    user_sum = user * 5 + none_user;
-                }
-            }
-            if(ki_end == 4){
-                ki_sum = 1000;
-            }
-            if(user_end == 4){
-                user_sum = 1000;
-            }
-            sum = sum + (ki_sum - user_sum);
-            ki_sum = 0;
-            user_sum = 0;
-        }
-        return sum;
-    }*/
-
+*/

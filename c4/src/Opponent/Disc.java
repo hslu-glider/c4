@@ -36,6 +36,9 @@ public class Disc {
     }
     
     public int getDiscPlayer(){
+        if(this == null){
+            return 0;
+        }
         return player;
     }
     

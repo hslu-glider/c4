@@ -20,7 +20,7 @@ public class Alpha_Beta_Cut {
     private MoveNode head;
     
     public Alpha_Beta_Cut(int level, Disc gameField[][]){
-        this.level = level;
+        this.level = level * 2;
         this.gameField = gameField;
         savedRow = 0;
         head = null;

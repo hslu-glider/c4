@@ -54,7 +54,7 @@ public class C4_KI {
     public static void main(String[] args) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int eingabe = 0;    
-        int level = 2;
+        int level = 1;
         
         C4_KI ki = new C4_KI(level);
         
