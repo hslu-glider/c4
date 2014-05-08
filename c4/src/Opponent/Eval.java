@@ -13,6 +13,9 @@ public class Eval {
     private final static int ROWS = 7;
     private final static int COLS = 6;
     
+    private final static int USER_MUL = -3000;
+    private final static int KI_MUL = 1000;
+    
     public static int eval(Disc gameField[][]){
         int sum = 0;
                 
@@ -34,29 +37,23 @@ public class Eval {
                 do{
                     row++;
                     sum++;
-                    if(sum == 4){
-                        sum = 1000;
+                    if(sum >= 4){
+                        sum = KI_MUL;
                     }
-                    if(row < 7){
-                        break;
-                    }
-                    if(gameField[row][col] == null){
+                    if(row > 6 || gameField[row][col] == null){
                         break;
                     }
                 }
                 while(gameField[row][col].getDiscPlayer() == Disc.KI);
             }
-            else if(gameField[row][col].getDiscPlayer() == Disc.USER){
+            else{
                 do{
                     row++;
                     sum--;
-                    if(sum == -4){
-                        sum = -1000;
+                    if(sum <= -4){
+                        sum = USER_MUL;
                     }
-                    if(row < 7){
-                        break;
-                    }
-                    if(gameField[row][col] == null){
+                    if(row > 6 || gameField[row][col] == null){
                         break;
                     }
                 }
@@ -68,36 +65,30 @@ public class Eval {
     
     private static int getNbrDiagRight(Disc gameField[][], int row, int col){
         int sum = 0;
-        if(row <= 3 && col <= 4 && gameField[row][col] != null){
+        if(row <= 3 && col <= 2 && gameField[row][col] != null){
             if(gameField[row][col].getDiscPlayer() == Disc.KI){
                 do{
                     row++;
                     col++;
                     sum++;
-                    if(sum == 4){
-                        sum = 1000;
+                    if(sum >= 4){
+                        sum = KI_MUL;
                     }
-                    if(row < 7){
-                        break;
-                    }
-                    if(gameField[row][col] == null){
+                    if(row > 6 || col > 5 || gameField[row][col] == null){
                         break;
                     }
                 }
                 while(gameField[row][col].getDiscPlayer() == Disc.KI);
             }
-            else if(gameField[row][col].getDiscPlayer() == Disc.USER){
+            else{
                 do{
                     row++;
                     col++;
                     sum--;
-                    if(sum == -4){
-                        sum = -1000;
+                    if(sum <= -4){
+                        sum = USER_MUL;
                     }
-                    if(row < 7){
-                        break;
-                    }
-                    if(gameField[row][col] == null){
+                    if(row > 6 || col > 5 || gameField[row][col] == null){
                         break;
                     }
                 }
@@ -114,29 +105,23 @@ public class Eval {
                 do{
                     col++;
                     sum++;
-                    if(sum == 4){
-                        sum = 1000;
+                    if(sum >= 4){
+                        sum = KI_MUL;
                     }
-                    if(col < 6){
-                        break;
-                    }
-                    if(gameField[row][col] == null){
+                    if(col > 5 || gameField[row][col] == null){
                         break;
                     }
                 }
                 while(gameField[row][col].getDiscPlayer() == Disc.KI);
             }
-            else if(gameField[row][col].getDiscPlayer() == Disc.USER){
+            else{
                 do{
                     col++;  
                     sum--;
-                    if(sum == -4){
-                        sum = -1000;
+                    if(sum <= -4){
+                        sum = USER_MUL;
                     }
-                    if(col < 6){
-                        break;
-                    }
-                    if(gameField[row][col] == null){
+                    if(col > 5 || gameField[row][col] == null){
                         break;
                     }
                 }
@@ -148,36 +133,30 @@ public class Eval {
     
     private static int getNbrDiagLeft(Disc gameField[][], int row, int col){
         int sum = 0;
-        if(row >= 3 && col >= 4 && gameField[row][col] != null){
+        if(row >= 3 && col <= 2 && gameField[row][col] != null){
             if(gameField[row][col].getDiscPlayer() == Disc.KI){
                 do{
                     row--;
                     col++;
                     sum++;
-                    if(sum == 4){
-                        sum = 1000;
+                    if(sum >= 4){
+                        sum = KI_MUL;
                     }
-                    if(col < 6){
-                        break;
-                    }
-                    if(gameField[row][col] == null){
+                    if(col > 5 || row < 0 || gameField[row][col] == null){
                         break;
                     }
                 }
                 while(gameField[row][col].getDiscPlayer() == Disc.KI);
             }
-            else if(gameField[row][col].getDiscPlayer() == Disc.USER){
+            else{
                 do{
                     row--;
                     col++;
                     sum--;
-                    if(sum == -4){
-                        sum = -1000;
+                    if(sum <= -4){
+                        sum = USER_MUL;
                     }
-                    if(col < 6){
-                        break;
-                    }
-                    if(gameField[row][col] == null){
+                    if(col > 5 || row < 0|| gameField[row][col] == null){
                         break;
                     }
                 }

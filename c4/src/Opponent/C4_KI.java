@@ -40,9 +40,11 @@ public class C4_KI {
         gameField = Disc.placeUserDisc(row_user, gameField);
         abc.updateGameField(gameField);
         row = abc.getNextRow();
-        gameField = Disc.placeKIDisc(row, gameField);
+        if (row != -1){
+            gameField = Disc.placeKIDisc(row, gameField);
+        }
         /*-----------------------------*/
-        Plot.plot_GameField(gameField);   // for Tests
+        //Plot.plot_GameField(gameField);   // for Tests
         /*-----------------------------*/
         return row;
     }
@@ -54,7 +56,7 @@ public class C4_KI {
     public static void main(String[] args) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int eingabe = 0;    
-        int level = 1;
+        int level = 1;      // Level 1-4
         
         C4_KI ki = new C4_KI(level);
         

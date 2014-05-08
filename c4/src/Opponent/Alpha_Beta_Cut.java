@@ -31,7 +31,7 @@ public class Alpha_Beta_Cut {
     }
     
     public int getNextRow(){
-        savedRow = 0;
+        savedRow = -1;
         head = new MoveNode(0);
         max(level, neg_inf, pos_inf, head);
         return savedRow;
@@ -40,7 +40,7 @@ public class Alpha_Beta_Cut {
     private int max(int depth, int alpha, int beta, MoveNode node) {    
         int maxValue;
         int value;
-        if (depth == 0){
+        if (depth == 0 || isGameFieldFull()){
             return Eval.eval(gameField);
         }
         maxValue = alpha;    
@@ -71,11 +71,12 @@ public class Alpha_Beta_Cut {
         int minValue;
         int value;
         
-        if (depth == 0){
+        if (depth == 0 || isGameFieldFull()){
             return Eval.eval(gameField);
         }
-        minValue = beta;    
-        generateMoves(node);
+        minValue = beta;  
+        generateMoves(node); 
+
         for(int i = 0; i < 7; i++) {
             if(node.moveRow[i] != null){
                 gameField = Disc.placeUserDisc(node.moveRow[i].getRow(), gameField);
@@ -92,7 +93,7 @@ public class Alpha_Beta_Cut {
         return minValue;
     }
     
-    public void generateMoves(MoveNode node){
+    private void generateMoves(MoveNode node){
         for(int i = 0; i < 7; i++) {
             if(node.moveRow[i] == null){     
                 if(gameField[i][5] == null){
@@ -103,6 +104,15 @@ public class Alpha_Beta_Cut {
                 generateMoves(node.getNext(i));
             }
         }
+    }
+    
+    private boolean isGameFieldFull(){
+        for(int i = 0; i < 7; i++){      
+            if(gameField[i][5] == null){
+                return false;
+            }
+        }
+        return true;
     }
 }
 
