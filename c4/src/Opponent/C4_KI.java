@@ -35,16 +35,25 @@ public class C4_KI {
         abc = new Alpha_Beta_Cut(level, gameField);
     }
     
+    /*
+     * return 
+     */
     public int KI_makeNextMove(int row_user){
         int row;
         gameField = Disc.placeUserDisc(row_user, gameField);
+        if(Eval.eval(gameField) < -500){
+            return 10;
+        }
         abc.updateGameField(gameField);
         row = abc.getNextRow();
         if (row != -1){
             gameField = Disc.placeKIDisc(row, gameField);
+            if(Eval.eval(gameField) > 500){
+                return 20;
+        }
         }
         /*-----------------------------*/
-        //Plot.plot_GameField(gameField);   // for Tests
+        Plot.plot_GameField(gameField);   // for Tests
         /*-----------------------------*/
         return row;
     }
@@ -55,8 +64,9 @@ public class C4_KI {
      */
     public static void main(String[] args) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int eingabe = 0;    
-        int level = 1;      // Level 1-4
+        int eingabe = 0;   
+        int res;
+        int level = 4;      // Level 1-4
         
         C4_KI ki = new C4_KI(level);
         
@@ -69,7 +79,13 @@ public class C4_KI {
             break;
         }
         if(eingabe >= 0 && eingabe < 7){
-            ki.KI_makeNextMove(eingabe);
+            res = ki.KI_makeNextMove(eingabe);
+            if(res == 10){
+                System.out.println("Du hast gewonnen :)!!!");
+            }
+            else if(res == 20){
+                System.out.println("Compuer hat gewonnen, du loser!");
+            }
         }
         try{
             eingabe = br.read() - 48;
