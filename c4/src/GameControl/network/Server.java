@@ -35,51 +35,70 @@ import java.net.Socket;
  */
 public class Server {
 	
-	/**
-	 * Constants for the client
-	 */
 	final static int PORT_DEFAULT = 6699;
+
+	private int port = PORT_DEFAULT;
 	
-	int port = PORT_DEFAULT;
-	ServerSocket socket;
+	private ServerSocket socket;
+	private Socket client;
+	
+	private PrintWriter outStream;
+	private BufferedReader inStream;
+	
 	
 	/**
-	 * Create a TCP-Server.
+	 * Create a TCP-Server on default port.
+	 * @throws IOException 
+	 */
+	public Server () throws IOException {
+		try {
+			ServerSocket socket = new ServerSocket(port);
+		} catch (IOException ex) {
+			throw new IOException(ex.getMessage());
+		} finally {
+			socket.close();
+		}
+	}
+	
+	/**
+	 * Create a TCP-Server on specified port.
 	 * @param port
 	 * @throws IOException 
 	 */
 	public Server(int port) throws IOException{
-		
-		try {
-			ServerSocket socket = new ServerSocket(port);
-		} catch (IOException ex) {
-			
-		} finally {
-			socket.close();
-		}
+			this.port = port;
+			ServerSocket socket = new ServerSocket(this.port);
 	}
 	
-	public boolean changePort(int port) throws IOException {
-		try{
-			socket.close();
-			ServerSocket socket = new ServerSocket(port);
-			return true;
-		}catch (IOException ex){
-			throw new IOException(ex.getMessage());
-		} finally {
-			return false;
-		}
+	/**
+	 * Change the port number of the TCP Server.
+	 * @param port
+	 * @return
+	 * @throws IOException 
+	 */
+	public void changePort(int port) throws IOException {
+		socket.close();
+		socket = new ServerSocket(port);
 	}
 	
-	public boolean closeConnection() throws IOException{
-		try{
-			socket.close();
-			return true;
-		} catch (IOException ex){
-			throw new IOException(ex.getMessage());
-		} finally {
-			return false;
-		}
+	/**
+	 * Close the TCP-Connection.
+	 * @throws IOException 
+	 */
+	public void closeConnection() throws IOException{	
+		outStream.flush();
+		socket.close();
+	}
+	
+	/**
+	 * Wait for connection of remote player and build an stream cahnnel. 
+	 * @throws IOException 
+	 */
+	public void connectPlayer() throws IOException{
+		client = socket.accept();
+		outStream = new PrintWriter(client.getOutputStream());
+		inStream = new BufferedReader(
+			new InputStreamReader(client.getInputStream()));
 	}
 	
 }
