@@ -33,7 +33,7 @@ import java.net.Socket;
  *
  * @author ninux
  */
-public class Server {
+public class Server implements Runnable {
 	
 	final static int PORT_DEFAULT = 6699;
 
@@ -45,23 +45,21 @@ public class Server {
 	private PrintWriter outStream;
 	private BufferedReader inStream;
 	
+	private String received;
+	
+	private boolean connected = false;
+	
 	
 	/**
-	 * Create a TCP-Server on default port.
+	 * Create a TCP server on default port.
 	 * @throws IOException 
 	 */
 	public Server () throws IOException {
-		try {
-			ServerSocket socket = new ServerSocket(port);
-		} catch (IOException ex) {
-			throw new IOException(ex.getMessage());
-		} finally {
-			socket.close();
-		}
+		socket = new ServerSocket(port);
 	}
 	
 	/**
-	 * Create a TCP-Server on specified port.
+	 * Create a TCP server on specified port.
 	 * @param port
 	 * @throws IOException 
 	 */
@@ -82,7 +80,7 @@ public class Server {
 	}
 	
 	/**
-	 * Close the TCP-Connection.
+	 * Close the TCP connection.
 	 * @throws IOException 
 	 */
 	public void closeConnection() throws IOException{	
@@ -91,14 +89,45 @@ public class Server {
 	}
 	
 	/**
-	 * Wait for connection of remote player and build an stream cahnnel. 
+	 * Connect to remote player and build an stream cahnnel. 
 	 * @throws IOException 
 	 */
 	public void connectPlayer() throws IOException{
 		client = socket.accept();
+		connected = true;
+		System.out.println("Connection to player successufl!");
 		outStream = new PrintWriter(client.getOutputStream());
 		inStream = new BufferedReader(
 			new InputStreamReader(client.getInputStream()));
+		outStream.flush();
+		Thread t = new Thread();
+		t.start();
+	}
+	
+	/**
+	 * Disconnect the player.
+	 */
+	public void disconnectPlayer() {
+		connected = false;
+	}
+	
+	public void sendMessage(String message){
+		outStream.println(message);
+	}
+	
+	public String getMessage(){
+		return received;
+	}
+
+	@Override
+	public void run() {
+		while(connected) {
+			try {
+				received = inStream.readLine();
+			} catch (Exception ex){
+				
+			} 
+		}
 	}
 	
 }

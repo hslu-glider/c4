@@ -29,14 +29,14 @@ import java.util.ArrayList;
 public interface Communication {
 	
 	/**
-	 * 
+	 * Set a disk at at specified row.
 	 * @param row
 	 * @return 
 	 */
 	public boolean setDisk(int row);
 	
 	/**
-	 * Ask opponent for next move.
+	 * Request a move from the opponent.
 	 * @return 
 	 */
 	public boolean requestMove();
@@ -53,5 +53,7 @@ public interface Communication {
 	 * @return 
 	 */
 	public boolean chooseOpponent(String player);
+	
+	
 	
 }

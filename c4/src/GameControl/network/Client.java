@@ -31,7 +31,7 @@ import java.net.Socket;
  *
  * @author ninux
  */
-public class Client {
+public class Client implements Runnable {
 	
 	/**
 	 * Constants for the client
@@ -41,10 +41,29 @@ public class Client {
 	
 	private int port = PORT_DEFAULT;
 	private String host = HOST_DEFAULT;
+	
+	private boolean connected = false;
+	
+	private String received;
+	
 	private Socket client;
 	
+	private PrintWriter outStream;
+	private BufferedReader inStream;
+	
 	/**
-	 * Create a TCP-Client
+	 * Create TCP client at default port to localhost.
+	 * @throws IOException 
+	 */
+	public Client () throws IOException {
+		this.port = port;
+		this.host = host;
+		
+		client = new Socket(host, port);
+	}
+	
+	/**
+	 * Create a TCP client
 	 * @param port
 	 * @param host
 	 * @throws IOException 
@@ -52,17 +71,39 @@ public class Client {
 	public Client(int port, String host) throws IOException {
 		this.port = port;
 		this.host = host;
-		try {
-			Socket client = new Socket(host, port);
-		} catch (IOException ex){
-			throw new IOException(ex.getMessage());
-		} finally {
-			client.close();
-		}
+		
+		client = new Socket(host, port);
+		outStream = new PrintWriter(client.getOutputStream());
+		inStream = new BufferedReader(
+			new InputStreamReader(client.getInputStream()));
+		connected = true;
+		Thread t = new Thread();
+		t.run();
+	} 
+	
+	public void sendMessage(String message){
+		outStream.println(message);
 	}
 	
 	public void closeConnection() throws IOException {
 		client.close();
 	}
+	
+	public String getMessage(){
+		return received;
+	}
+
+	@Override
+	public void run() {
+		while(connected) {
+			try {
+				received = inStream.readLine();
+			} catch (Exception ex){
+				
+			} 
+		}
+	}
+	
+	
 	
 }
