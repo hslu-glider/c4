@@ -20,57 +20,45 @@
 
 package GameControl.parser;
 
-import GameControl.Communication;
-import java.util.ArrayList;
+import GameControl.network.*;
+import java.io.IOException;
+import java.net.InetAddress;
 
 /**
  *
  * @author ninux
  */
-public class Parser implements Communication {
-	
-	
-	public Parser () {
-		
-	}
-	
-	private void readCommand(){
-		
-	}
-	
-	/**
-	 * 
-	 * @param row
-	 * @return 
-	 */
-	public boolean setDisk(int row){
-		return true;
-	}
-	
-	/**
-	 * Ask opponent for next move.
-	 * @return 
-	 */
-	public boolean requestMove(){
-		return true;
-	}
-	
-	/**
-	 * Looks after online players and returns an ArrayList fo them. 
-	 * @return 
-	 */
-	public ArrayList<String> findPlayers(){
-		ArrayList<String> players = new ArrayList<>();
-		return players;
-	}
-	
-	/**
-	 * Opens an TCP connection to the given player.
-	 * @param player
-	 * @return 
-	 */
-	public boolean chooseOpponent(String player){
-		return true;
-	}
-		
+public class Parser implements Iparser {
+    private Client client;
+    private Server server;
+    private UDP udp;
+    
+    public Parser () throws IOException{
+
+    }
+    
+    @Override
+    public InetAddress searchPlayer(){
+        InetAddress addr = null;
+        return addr;
+    }
+
+    @Override
+    public void waitForPlayer() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean connectToPlayer(InetAddress adr) {
+        
+        return true;
+    }
+
+    @Override
+    public int sendMove(int row) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
+
+// new String()
+// .getBytes()

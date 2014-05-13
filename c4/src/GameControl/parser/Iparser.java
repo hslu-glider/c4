@@ -1,6 +1,6 @@
 
 
-package GameControl;
+package GameControl.parser;
 
 import java.net.InetAddress;
 
