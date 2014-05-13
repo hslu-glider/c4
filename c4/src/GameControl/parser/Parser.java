@@ -22,6 +22,7 @@ package GameControl.parser;
 
 import GameControl.network.*;
 import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.InetAddress;
 
 /**
@@ -29,36 +30,75 @@ import java.net.InetAddress;
  * @author ninux
  */
 public class Parser implements Iparser {
+    private static final int CLIENT = 1;
+    private static final int SERVER = 1;
+    private int con;
+    
     private Client client;
     private Server server;
-    private UDP udp;
     
     public Parser () throws IOException{
 
     }
     
     @Override
-    public InetAddress searchPlayer(){
-        InetAddress addr = null;
-        return addr;
+    public InetAddress searchPlayer() throws Exception{
+        InetAddress addr = InetAddress.getByName("10.3.127.255");  //Broadcastadresse
+        String data = "C4:Request\n";
+        UDP udp = new UDP();
+        DatagramPacket packet = new DatagramPacket(data.getBytes(), data.getBytes().length, addr, 6699);
+        udp.send(packet);
+        Thread.sleep(500);
+        if((packet = udp.getPacket()) != null){
+            if(new String(packet.getData(),0,10).compareTo("C4:Waiting") == 0){
+                return packet.getAddress();
+            }
+        }
+        return null;
     }
 
     @Override
-    public void waitForPlayer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void waitForPlayer() throws Exception{
+        DatagramPacket packet;
+        String message;
+        UDP udp = new UDP();
+        con = SERVER;
+        server = new Server();
+        while((packet = udp.getPacket()) == null){}
+        if(new String(packet.getData(),0,10).compareTo("C4:Request") == 0){
+            String data = "C4:Waiting";
+            packet = new DatagramPacket(data.getBytes(), data.getBytes().length, packet.getAddress(), packet.getPort());
+            udp.send(packet);
+            while((message = client.getMessage()) == null){}
+            if(message.compareTo("C4:Connection:Request") == 0){
+                server.sendMessage("C4:Move:" + row);
+            }
+        }
     }
 
     @Override
-    public boolean connectToPlayer(InetAddress adr) {
-        
-        return true;
+    public int connectToPlayer(InetAddress adr) throws Exception{
+        String message;
+        con = CLIENT;
+        client = new Client();
+        client.sendMessage("C4:Connection:Request");
+        while((message = client.getMessage()) == null){}
+        return message.charAt(8); 
     }
 
     @Override
     public int sendMove(int row) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String message;
+        if(con == CLIENT){
+            client.sendMessage("C4:Move:" + row);
+            while((message = client.getMessage()) == null){}
+            return message.charAt(8); 
+        }
+        else if(con == SERVER){
+            server.sendMessage("C4:Move:" + row);
+            while((message = server.getMessage()) == null){}
+            return message.charAt(8); 
+        }
+        return -1;
     }
 }
-
-// new String()
-// .getBytes()
