@@ -30,12 +30,6 @@ public class Opponent {
     private int opponent;
     private C4_KI ki;
     
-    public Opponent(int opponent){
-        this.opponent = opponent;
-        if(opponent == LOCAL){
-            ki = new C4_KI(DEFAULT_LEVEL);
-        }
-    }
     
     public Opponent(int opponent, int level){
         this.opponent = opponent;
@@ -56,5 +50,10 @@ public class Opponent {
             kiMove = ki.KI_makeNextMove(userMove);
             GameControl.nextKiMove(kiMove);
         }
+    }
+    
+    @Override
+    public void LevelChanged(ModelEvent e){
+        level = e;
     }
 }
