@@ -24,7 +24,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import static java.lang.Integer.parseInt;
+import java.net.InetAddress;
 import java.net.Socket;
 
 /**
@@ -68,9 +68,9 @@ public class Client implements Runnable {
 	 * @param host
 	 * @throws IOException 
 	 */
-	public Client(int port, String host) throws IOException {
+	public Client(int port, InetAddress host) throws IOException {
 		this.port = port;
-		this.host = host;
+		//this.host = host;
 		
 		client = new Socket(host, port);
 		outStream = new PrintWriter(client.getOutputStream());
@@ -78,32 +78,37 @@ public class Client implements Runnable {
 			new InputStreamReader(client.getInputStream()));
 		connected = true;
 		Thread t = new Thread();
-		t.run();
+		//t.start();
 	} 
 	
 	public void sendMessage(String message){
 		outStream.println(message);
+                outStream.flush();
 	}
 	
 	public void closeConnection() throws IOException {
 		client.close();
 	}
 	
-	public String getMessage(){
-		return received;
+	public String getMessage() throws IOException{
+            String message;
+            while((message = inStream.readLine()) == null){}
+            return message;//return received;
 	}
-
+        
 	@Override
 	public void run() {
 		while(connected) {
 			try {
-				received = inStream.readLine();
+                            String temp;
+                            if((temp = inStream.readLine()) != null){
+                                received = temp;
+                            }	
 			} catch (Exception ex){
 				
 			} 
 		}
 	}
-	
 	
 	
 }

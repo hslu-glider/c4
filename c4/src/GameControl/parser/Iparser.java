@@ -24,6 +24,6 @@ public interface Iparser {
 	
 	public int connectToPlayer(InetAddress adr) throws Exception;
 	
-	public int sendMove(int row);
+	public int sendMove(int row) throws Exception;
 	
 }
