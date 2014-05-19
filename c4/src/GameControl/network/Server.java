@@ -100,8 +100,8 @@ public class Server implements Runnable {
 		inStream = new BufferedReader(
 			new InputStreamReader(client.getInputStream()));
 		outStream.flush();
-		Thread t = new Thread();
-		t.start();
+		//Thread t = new Thread();
+		//t.start();
 	}
 	
 	/**
@@ -113,17 +113,27 @@ public class Server implements Runnable {
 	
 	public void sendMessage(String message){
 		outStream.println(message);
+		outStream.flush();
 	}
 	
-	public String getMessage(){
-		return received;
+	public String getMessage() throws IOException {
+		//return received;
+		String message = inStream.readLine();
+		while(message == null){
+			message = inStream.readLine();
+		}
+		return message;
 	}
 
 	@Override
 	public void run() {
 		while(connected) {
 			try {
-				received = inStream.readLine();
+				String temp;
+				if((temp=inStream.readLine()) != null){
+					//received = inStream.readLine();
+					received = temp;
+				}
 			} catch (Exception ex){
 				
 			} 
