@@ -60,7 +60,7 @@ public class Server implements Runnable {
 	
 	/**
 	 * Create a TCP server on specified port.
-	 * @param port
+	 * @param port Port
 	 * @throws IOException 
 	 */
 	public Server(int port) throws IOException{
@@ -70,7 +70,7 @@ public class Server implements Runnable {
 	
 	/**
 	 * Change the port number of the TCP Server.
-	 * @param port
+	 * @param port 
 	 * @return
 	 * @throws IOException 
 	 */
