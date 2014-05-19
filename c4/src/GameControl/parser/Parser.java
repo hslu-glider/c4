@@ -31,7 +31,7 @@ import java.net.InetAddress;
  */
 public class Parser implements Iparser {
     private static final int CLIENT = 1;
-    private static final int SERVER = 1;
+    private static final int SERVER = 2;
     private int con;
     
     private Client client;
@@ -43,7 +43,7 @@ public class Parser implements Iparser {
     
     @Override
     public InetAddress searchPlayer() throws Exception{
-        InetAddress addr = InetAddress.getByName("10.3.127.255");  //Broadcastadresse
+        InetAddress addr = InetAddress.getByName("192.168.1.110");  //Broadcastadresse
         String data = "C4:Request";
         UDP udp = new UDP();
         DatagramPacket packet = new DatagramPacket(data.getBytes(), data.getBytes().length, addr, 6699);
@@ -58,7 +58,6 @@ public class Parser implements Iparser {
     @Override
     public boolean waitForPlayer() throws Exception{
         DatagramPacket packet;
-        String message;
         UDP udp = new UDP();
         con = SERVER;
         server = new Server();
@@ -67,8 +66,8 @@ public class Parser implements Iparser {
             String data = "C4:Waiting";
             packet = new DatagramPacket(data.getBytes(), data.getBytes().length, packet.getAddress(), packet.getPort());
             udp.send(packet);
-            message = client.getMessage();
-            if(message.compareTo("C4:Connection:Request") == 0){
+            server.connectPlayer();
+            if(server.getMessage().compareTo("C4:Connection:Request") == 0){
                 return true;
             }
         }
@@ -79,24 +78,24 @@ public class Parser implements Iparser {
     public int connectToPlayer(InetAddress adr) throws Exception{
         String message;
         con = CLIENT;
-        client = new Client();
+        client = new Client(6699, adr);
         client.sendMessage("C4:Connection:Request");
         message = client.getMessage();
-        return message.charAt(8); 
+        return message.charAt(8) - 48; 
     }
 
     @Override
-    public int sendMove(int row) {
+    public int sendMove(int row) throws Exception{
         String message;
         if(con == CLIENT){
             client.sendMessage("C4:Move:" + row);
             message = client.getMessage();
-            return message.charAt(8); 
+            return message.charAt(8) - 48; 
         }
         else if(con == SERVER){
             server.sendMessage("C4:Move:" + row);
             message = server.getMessage();
-            return message.charAt(8); 
+            return message.charAt(8) - 48; 
         }
         return -1;
     }
