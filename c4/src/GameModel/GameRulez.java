@@ -20,7 +20,7 @@
 
 package GameModel;
 
-
+import java.awt.event.ActionEvent;
 
 /**
  *
@@ -35,13 +35,17 @@ public interface GameRulez {
     
     public Chip getSlot(int row, int col);
     
-    public boolean isLegalInsert (int row);
+    public boolean isLegalInsert (int col);
     
     public void clearboard ();
     
     public boolean isMyTurn();
     
-    public boolean insertChip();
+    public boolean insertChip(int player, int x);
+    
+    public void actionPerformed(ActionEvent e);
+    
+    public void switchPlayer();
     
     
 }
