@@ -44,36 +44,35 @@ public class Parser implements Iparser {
     @Override
     public InetAddress searchPlayer() throws Exception{
         InetAddress addr = InetAddress.getByName("10.3.127.255");  //Broadcastadresse
-        String data = "C4:Request\n";
+        String data = "C4:Request";
         UDP udp = new UDP();
         DatagramPacket packet = new DatagramPacket(data.getBytes(), data.getBytes().length, addr, 6699);
         udp.send(packet);
-        Thread.sleep(500);
-        if((packet = udp.getPacket()) != null){
-            if(new String(packet.getData(),0,10).compareTo("C4:Waiting") == 0){
-                return packet.getAddress();
-            }
+        packet = udp.getPacket();
+        if(new String(packet.getData(),0,10).compareTo("C4:Waiting") == 0){
+            return packet.getAddress();
         }
         return null;
     }
 
     @Override
-    public void waitForPlayer() throws Exception{
+    public boolean waitForPlayer() throws Exception{
         DatagramPacket packet;
         String message;
         UDP udp = new UDP();
         con = SERVER;
         server = new Server();
-        while((packet = udp.getPacket()) == null){}
+        packet = udp.getPacket();
         if(new String(packet.getData(),0,10).compareTo("C4:Request") == 0){
             String data = "C4:Waiting";
             packet = new DatagramPacket(data.getBytes(), data.getBytes().length, packet.getAddress(), packet.getPort());
             udp.send(packet);
-            while((message = client.getMessage()) == null){}
+            message = client.getMessage();
             if(message.compareTo("C4:Connection:Request") == 0){
-                server.sendMessage("C4:Move:" + row);
+                return true;
             }
         }
+        return false;
     }
 
     @Override
@@ -82,7 +81,7 @@ public class Parser implements Iparser {
         con = CLIENT;
         client = new Client();
         client.sendMessage("C4:Connection:Request");
-        while((message = client.getMessage()) == null){}
+        message = client.getMessage();
         return message.charAt(8); 
     }
 
@@ -91,12 +90,12 @@ public class Parser implements Iparser {
         String message;
         if(con == CLIENT){
             client.sendMessage("C4:Move:" + row);
-            while((message = client.getMessage()) == null){}
+            message = client.getMessage();
             return message.charAt(8); 
         }
         else if(con == SERVER){
             server.sendMessage("C4:Move:" + row);
-            while((message = server.getMessage()) == null){}
+            message = server.getMessage();
             return message.charAt(8); 
         }
         return -1;

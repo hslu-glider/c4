@@ -3,7 +3,6 @@
 package GameControl.parser;
 
 import java.net.InetAddress;
-import java.net.SocketException;
 
 /**
  *
@@ -21,7 +20,7 @@ public interface Iparser {
 	 * Waits for a broadcast from a client and sends back 
 	 * Inet Adress for connection.
 	 */
-	public void waitForPlayer() throws Exception;
+	public boolean waitForPlayer() throws Exception;
 	
 	public int connectToPlayer(InetAddress adr) throws Exception;
 	
