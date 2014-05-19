@@ -20,6 +20,7 @@
 
 package GameControl;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 
 /**
@@ -29,31 +30,36 @@ import java.util.ArrayList;
 public interface Communication {
 	
 	/**
-	 * Set a disk at at specified row.
+	 * Set a disk at a specified row.
 	 * @param row
 	 * @return 
 	 */
-	public boolean setDisk(int row);
-	
-	/**
-	 * Request a move from the opponent.
-	 * @return 
-	 */
-	public boolean requestMove();
+	public int setDisk(int row);
 	
 	/**
 	 * Looks after online players and returns an ArrayList fo them. 
 	 * @return 
 	 */
-	public ArrayList<String> findPlayers();
+	public InetAddress findPlayers();
+	
+	/**
+	 * Wait for TCP connection of a remote player.
+	 * @return 
+	 */
+	public boolean waitForNetworkPlayer();
 	
 	/**
 	 * Opens an TCP connection to the given player.
 	 * @param player
 	 * @return 
 	 */
-	public boolean chooseOpponent(String player);
+	public int startGame(InetAddress player);
 	
+	/**
+	 * Set the mode of the Game (local or remote).
+	 * @param mode 
+	 */
+	public void setMode(int mode);
 	
 	
 }
