@@ -1,0 +1,28 @@
+# some netbeans specific files
+nbproject/*
+!project.properties
+!project.xml
+build/*
+nbbuild/*
+dist/*
+nbdist/*
+nbactions.xml
+manifest.mf
+build.xml
+
+# some java specific files
+*.class
+*.jar
+*.war
+*.ear
+
+# general swap/backup files
+*.so
+*.swp
+*.lock
+/templates/netbeans/template/nbproject/private/
+/C4_KI/nbproject/private/
+/C4_KI/build/
+/c4/nbproject/private/
+/c4/dist/
+/c4/build/
