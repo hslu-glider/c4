@@ -22,7 +22,7 @@ package GameModel;
 
 /**
  *
- * @author Jan
+ * @author Jan Vonmoos
  */
 public class Chip {
     

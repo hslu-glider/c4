@@ -25,14 +25,14 @@ import java.awt.event.ActionEvent;
 
 /**
  *
- * @author Jan
+ * @author JanV Vonmoos
  */
 public class PlayBoard implements GameRulez
 {
     private static final int xaxes=7;
     private static final int yaxes=6;
     private Chip[][] playBoard;
-    private boolean currentuser=false;
+    private boolean currentuser=true;
     
     public PlayBoard() 
     {
@@ -115,7 +115,7 @@ public class PlayBoard implements GameRulez
                 }
             }
             playBoard[y][x] = new Chip(player, x , y, playBoard);
-            //switchPlayer();
+            switchPlayer();
             return true;
         }
     return false;
