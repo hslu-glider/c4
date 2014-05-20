@@ -2,7 +2,6 @@
 !c4/project.properties
 !c4/project.xml
 c4/build/*
-c4/nbbuild/*
 c4/dist/*
 c4/nbdist/*
 c4/nbactions.xml
