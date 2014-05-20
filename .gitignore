@@ -1,7 +1,20 @@
 # some netbeans specific files
+nbproject/*
+!project.properties
+!project.xml
+build/*
+nbbuild/*
+dist/*
+nbdist/*
+nbactions.xml
+manifest.mf
+build.xml
+
+c4/nbproject/*
 !c4/project.properties
 !c4/project.xml
 c4/build/*
+c4/nbbuild/*
 c4/dist/*
 c4/nbdist/*
 c4/nbactions.xml
