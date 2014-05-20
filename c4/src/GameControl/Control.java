@@ -2,6 +2,7 @@
 package GameControl;
 
 import GameControl.parser.*;
+import GameModel.PlayBoard;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -14,6 +15,9 @@ import java.util.logging.Logger;
  */
 public class Control implements Communication {
 	
+	private PlayBoard board;
+	// private SaveGame savedGame;
+	
 	private Parser parser;
 	
 	private static int LOCAL = 1;
@@ -23,12 +27,18 @@ public class Control implements Communication {
 	
 	public Control() throws IOException{
 		parser = new Parser();
+		board = new PlayBoard();
+		// savedGame = new SaveGame();
 	}
 
 	@Override
 	public int setDisk(int row) {
 		try {
-			return parser.sendMove(row);
+			if(board.insertChip(LOCAL, row)){
+				int answer = parser.sendMove(row);
+				board.insertChip(REMOTE, answer);
+				return answer;
+			}
 		} catch (Exception ex) {
 			
 		}
@@ -77,6 +87,11 @@ public class Control implements Communication {
 		else {
 			opponent = LOCAL;
 		}
+	}
+
+	@Override
+	public void loadGame() {
+		// board = new Board(savedGame.loadGame);
 	}
 	
 }

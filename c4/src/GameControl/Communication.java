@@ -37,7 +37,7 @@ public interface Communication {
 	public int setDisk(int row);
 	
 	/**
-	 * Looks after online players and returns an ArrayList fo them. 
+	 * Looks after online players and returns an InetAddress first match. 
 	 * @return 
 	 */
 	public InetAddress findPlayers();
@@ -57,9 +57,14 @@ public interface Communication {
 	
 	/**
 	 * Set the mode of the Game (local or remote).
-	 * @param mode 
+	 * @param mode 1 is local and 2 is remote
 	 */
 	public void setMode(int mode);
+	
+	/**
+	 * Loads a previously saved game. 
+	 */
+	public void loadGame();
 	
 	
 }

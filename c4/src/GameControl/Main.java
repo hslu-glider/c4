@@ -8,6 +8,7 @@ package GameControl;
 
 import GameControl.*;
 import GameControl.network.Server;
+import GameControl.parser.Parser;
 import java.io.IOException;
 
 /**
@@ -16,14 +17,17 @@ import java.io.IOException;
  */
 public class Main {
 	
-	public static void main(String[] args) throws IOException{
-		Server s = new Server();
-		try {
-			s.connectPlayer();
-		} catch (Exception ex){
-			System.err.println("Error: " + ex.getMessage());
-		}
+	public static void main(String[] args) throws Exception {
 		
+		Parser p = new Parser();
+		
+		
+		
+		p.waitForPlayer();
+		int temp = p.sendMove(2);
+		System.out.println(temp);
+		temp = p.sendMove(5);
+		System.out.println(temp);
 	}
 	
 }
