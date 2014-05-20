@@ -163,10 +163,7 @@ public class PlayBoard implements GameRulez
         {
             currentuser=true;
         }
-        for (ModelListener hl : listeners)
-        {
-            hl.playerHasChanged();
-        }
+
     }
     
     private Chip[][] coppy2dArray()

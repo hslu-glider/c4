@@ -15,6 +15,5 @@ import java.util.*;
 public interface ModelListener 
 {
     public void boardHasChanged(Chip[][] playBoard);
-    public void playerHasChanged();
     public void winnIsSet();
 }
