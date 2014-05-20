@@ -15,45 +15,43 @@ import javax.swing.JPanel;
  *
  * @author studhaal
  */
-public class GamePanel extends JPanel implements Runnable{
+public class GamePanel extends JPanel {
 
-    private int[][][] array = new int[7][6][2];
+    //<editor-fold defaultstate="collapsed" desc="GamePanel Variables">
+    private final int[][][] array = new int[7][6][2];
     private static final int absX = 59;
     private static final int absY = 30;
     private static final int width = 60;
     private static final int height = 60;
-    private static boolean inserting = false;
+    private static boolean changed = true;
+    private static boolean ismoving = false;
     private int row = 0;
-    private int column =0;
+    private int column = 0;
     private int posX = 59;
     private int posY = 30;
     private int newPosY = 30;
-    private Thread th = null;
+    //private Thread th = null;
+    //</editor-fold>
 
     public GamePanel() {
         setBorder(BorderFactory.createLineBorder(Color.black));
-        //Testdaten
-        /*
-        array[0][0][0] = 1;
-        array[1][0][0] = 1;
-        array[2][0][0] = 1;
-        array[3][0][0] = 1;
-        array[4][0][0] = 1;
-        array[5][0][0] = 1;
-        array[6][0][0] = 1;
-        array[0][1][1] = 1;
-        array[0][2][1] = 1;
-        array[0][3][1] = 1;
-        */
+        hasChanged();
     }
 
+    //<editor-fold defaultstate="collapsed" desc="JPanel Methods">
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(600, 500);
     }
 
     @Override
-    public void paintComponent(Graphics g) {
+    public synchronized void paintComponent(Graphics g) {
+        while (!changed) {
+            try {
+                wait();
+            } catch (InterruptedException ie) {
+            }
+        }
         super.paintComponent(g);
         for (int r = 0; r < 7; r++) {
             for (int c = 0; c < 6; c++) {
@@ -69,53 +67,101 @@ public class GamePanel extends JPanel implements Runnable{
                     }
                 }
             }
-        }
-        if (inserting) {
-            g.setColor(Color.red);
-            g.fillOval(posX, posY, width, height);
-            g.drawOval(posX, posY, width, height);
-        }
-    }
 
-    public synchronized void moveDisc(int x, int y){
-        row=x;
-        column=y;
-        posX = 59 + ((row) * 78);
-        newPosY = 30+((column)*69);
-        //th = null;
-        if(th==null){
-            th = new Thread(this);
-        }
-        th.start();
-        inserting=true;
-    }
-    
-    private synchronized void movedDisc(){
-        th.interrupt();
-        th=null;
-        insertDisc(row,column,0);
-        posX=absX;
-        posY=absY;
-        
-    }
-    
-    private void insertDisc(int x, int y, int player){
-        array[x][y][player]=1;
-    }
-
-    @Override
-    public void run() {
-        while(!Thread.currentThread().isInterrupted()){
-            while(posY < newPosY){
-                posY=posY+2;
-                repaint();
-                try{
-                    Thread.sleep(20);
-                }catch(InterruptedException ex){
-                }
+            if (isMoving()) {
+                g.setColor(Color.red);
+                g.fillOval(posX, posY, width, height);
+                g.drawOval(posX, posY, width, height);
             }
-            inserting = false;
-            movedDisc();
+            //changed = false;
+            notifyAll();
         }
     }
+
+    //</editor-fold>
+//<editor-fold defaultstate="collapsed" desc="Methods">
+    public boolean isMoving() {
+        return ismoving;
+    }
+
+    @SuppressWarnings("empty-statement")
+    public void moveDisc(int x, int y) {
+        /*while (isMoving()) {
+         try {
+         wait();
+         } catch (InterruptedException ie) {
+         }
+         }*/
+        row = x;
+        column = y;
+        posX = 59 + ((row) * 78);
+        newPosY = 30 + ((column) * 69);
+        hasChanged();
+        //notifyAll();
+        /*
+         //th = null;
+         if(th==null){
+         th = new Thread(this);
+         }
+         th.start();
+         ismoving=true;*/
+    }
+
+    public void movedDisc() {
+        while (isMoving()) {
+            try {
+                wait();
+            } catch (InterruptedException ie) {
+            }
+        }
+        insertDisc(row, column, 0);
+        posX = absX;
+        posY = absY;
+        ismoving = false;
+        repaint();
+        changed = false;
+        //notifyAll();
+    }
+
+    public boolean endPositionReached() {
+        posY = posY + 4;
+        return posY >= newPosY;
+    }
+
+    private void insertDisc(int x, int y, int player) {
+        array[x][y][player] = 1;
+    }
+
+    public void startMoving() {
+
+        ismoving = true;
+    }
+
+    public synchronized final void hasChanged() {
+        changed = true;
+        notifyAll();
+    }
+
+    public boolean somethingChanged() {
+        return changed;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Thread Run">
+    /*@Override
+     public void run() {
+     while (!Thread.currentThread().isInterrupted()) {
+     while (posY < newPosY) {
+     posY = posY + 4;
+     repaint();
+     try {
+     Thread.sleep(20);
+     } catch (InterruptedException ex) {
+     }
+     }
+     ismoving = false;
+     movedDisc();
+     }
+     }*/
+    //</editor-fold>
 }
