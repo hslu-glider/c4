@@ -26,12 +26,11 @@ import javax.swing.ListSelectionModel;
  *
  * @author studhaal
  */
-public class GameBoard extends Thread {
+public class GameBoard {
 
     public GameBoard() {
         createAndShowGUI();
         btnVsComputerActionPerformed();
-        this.start();
     }
 
     //<editor-fold defaultstate="collapsed" desc="gameBoard Variables">
@@ -63,12 +62,6 @@ public class GameBoard extends Thread {
     private static JList listPlayers;
     //</editor-fold>
 
-    /*public static void main(String[] args) {
-     master = new GameBoard();
-     createAndShowGUI();
-     btnVsComputerActionPerformed();
-     master.start();
-     }*/
     private void createAndShowGUI() {
         //<editor-fold defaultstate="collapsed" desc="Frame gameBoard">
         gameBoard = new JFrame("C4 - Game Board");
@@ -152,32 +145,32 @@ public class GameBoard extends Thread {
             }
         });
 
-        GroupLayout gamePanelLayout = new javax.swing.GroupLayout(gamePanel);
+        GroupLayout gamePanelLayout = new GroupLayout(gamePanel);
         gamePanel.setLayout(gamePanelLayout);
         gamePanelLayout.setHorizontalGroup(
-                gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gamePanelLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_Row1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                gamePanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(GroupLayout.Alignment.TRAILING, gamePanelLayout.createSequentialGroup()
+                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_Row1, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btn_Row2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_Row2, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btn_Row3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_Row3, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btn_Row4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_Row4, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btn_Row5, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_Row5, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btn_Row6, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_Row6, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btn_Row7, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_Row7, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
         );
         gamePanelLayout.setVerticalGroup(
-                gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                gamePanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(gamePanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(gamePanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(btn_Row1)
                                 .addComponent(btn_Row2)
                                 .addComponent(btn_Row3)
@@ -268,6 +261,7 @@ public class GameBoard extends Thread {
         //gameBoard.pack();
         gameBoard.setVisible(false);
         //</editor-fold>
+        
         //<editor-fold defaultstate="collapsed" desc="Frame mainMenu">
         mainMenu = new JFrame("C4 - Main Menu");
         buttonPanel = new JPanel();
@@ -395,7 +389,6 @@ public class GameBoard extends Thread {
         mainMenu.pack();
         mainMenu.setVisible(true);
         //</editor-fold>
-        gamePanel.somethingChanged();
     }
 
     //<editor-fold defaultstate="collapsed" desc="Events">
@@ -405,8 +398,7 @@ public class GameBoard extends Thread {
     }
 
     private void btn_Row1ActionPerformed() {
-        gamePanel.moveDisc(0, 5);
-        showMove();
+        insertDisc(0, 5);
     }
 
     private void btn_Row2ActionPerformed() {
@@ -461,8 +453,11 @@ public class GameBoard extends Thread {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Methods">
-    private void insertDisc(int row, int column) {
-        gamePanel.moveDisc(row, column);
+    private synchronized void insertDisc(int row, int column) {
+        if (!gamePanel.thRunning()) {
+            gamePanel.moveDisc(row, column);
+            gamePanel.startMoving();
+        }
     }
 
     private void LoadComputers() {
@@ -512,33 +507,5 @@ public class GameBoard extends Thread {
             }
         });
     }
-
-    private void showMove() {
-        gamePanel.hasChanged();
-        gamePanel.startMoving();
-        //this.start();
-    }
-
-    private void endMove() {
-        gamePanel.movedDisc();
-        //gamePanel.repaint();
-        //this.interrupt();
-    }
     //</editor-fold>
-
-    @Override
-    public void run() {
-        while (!Thread.currentThread().isInterrupted()) {
-            if (gamePanel.somethingChanged()) {
-                while (!gamePanel.endPositionReached()) {
-                    gamePanel.repaint();
-                    try {
-                        Thread.sleep(20);
-                    } catch (InterruptedException ie) {
-                    }
-                }
-                endMove();
-            }
-        }
-    }
 }
