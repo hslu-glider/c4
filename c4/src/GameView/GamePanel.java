@@ -15,7 +15,7 @@ import javax.swing.JPanel;
  *
  * @author studhaal
  */
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements Runnable {
 
     //<editor-fold defaultstate="collapsed" desc="GamePanel Variables">
     private final int[][][] array = new int[7][6][2];
@@ -23,19 +23,17 @@ public class GamePanel extends JPanel {
     private static final int absY = 30;
     private static final int width = 60;
     private static final int height = 60;
-    private static boolean changed = true;
     private static boolean ismoving = false;
     private int row = 0;
     private int column = 0;
     private int posX = 59;
     private int posY = 30;
     private int newPosY = 30;
-    //private Thread th = null;
+    private Thread th = null;
     //</editor-fold>
 
     public GamePanel() {
         setBorder(BorderFactory.createLineBorder(Color.black));
-        hasChanged();
     }
 
     //<editor-fold defaultstate="collapsed" desc="JPanel Methods">
@@ -46,12 +44,6 @@ public class GamePanel extends JPanel {
 
     @Override
     public synchronized void paintComponent(Graphics g) {
-        while (!changed) {
-            try {
-                wait();
-            } catch (InterruptedException ie) {
-            }
-        }
         super.paintComponent(g);
         for (int r = 0; r < 7; r++) {
             for (int c = 0; c < 6; c++) {
@@ -73,95 +65,82 @@ public class GamePanel extends JPanel {
                 g.fillOval(posX, posY, width, height);
                 g.drawOval(posX, posY, width, height);
             }
-            //changed = false;
-            notifyAll();
         }
     }
-
     //</editor-fold>
-//<editor-fold defaultstate="collapsed" desc="Methods">
+    
+    //<editor-fold defaultstate="collapsed" desc="Methods">
     public boolean isMoving() {
         return ismoving;
     }
 
-    @SuppressWarnings("empty-statement")
     public void moveDisc(int x, int y) {
-        /*while (isMoving()) {
-         try {
-         wait();
-         } catch (InterruptedException ie) {
-         }
-         }*/
         row = x;
         column = y;
         posX = 59 + ((row) * 78);
         newPosY = 30 + ((column) * 69);
-        hasChanged();
+        //somethingChanged(true);
         //notifyAll();
-        /*
-         //th = null;
-         if(th==null){
-         th = new Thread(this);
-         }
-         th.start();
-         ismoving=true;*/
+
+        //th = null;
     }
 
     public void movedDisc() {
-        while (isMoving()) {
-            try {
-                wait();
-            } catch (InterruptedException ie) {
-            }
-        }
         insertDisc(row, column, 0);
         posX = absX;
         posY = absY;
         ismoving = false;
-        repaint();
-        changed = false;
-        //notifyAll();
+        th.interrupt();
+        while (th != null) {
+            th = null;
+        }
     }
 
-    public boolean endPositionReached() {
-        posY = posY + 4;
-        return posY >= newPosY;
+    public synchronized void moveToEndPosition() {
+        if (posY < newPosY) {
+            posY = posY + 4;
+        } else {
+            movedDisc();
+        }
     }
 
     private void insertDisc(int x, int y, int player) {
         array[x][y][player] = 1;
     }
 
-    public void startMoving() {
-
+    public synchronized void startMoving() {
         ismoving = true;
+        if (th == null) {
+            th = new Thread(this);
+        }
+        th.start();
     }
-
-    public synchronized final void hasChanged() {
-        changed = true;
-        notifyAll();
-    }
-
-    public boolean somethingChanged() {
-        return changed;
+    
+    public boolean thRunning() {
+        if (th != null) {
+            return th.isAlive();
+        } else {
+            return false;
+        }
     }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Thread Run">
-    /*@Override
-     public void run() {
-     while (!Thread.currentThread().isInterrupted()) {
-     while (posY < newPosY) {
-     posY = posY + 4;
-     repaint();
-     try {
-     Thread.sleep(20);
-     } catch (InterruptedException ex) {
-     }
-     }
-     ismoving = false;
-     movedDisc();
-     }
-     }*/
+    @Override
+    public void run() {
+        while (!Thread.currentThread().isInterrupted()) {
+            //if (gamePanel.hasChanged()) {
+            while (isMoving()) {
+                moveToEndPosition();
+                repaint();
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException ie) {
+                }
+            }
+            repaint();
+            //}
+        }
+    }
     //</editor-fold>
 }
