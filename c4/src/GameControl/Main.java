@@ -22,6 +22,7 @@ public class Main {
 	
     private static ActionListener gameboardlistener;
 	private static Parser p;
+	private static Control c;
     
 	public static void main(String[] args) throws Exception {
 		p = new Parser();
@@ -34,12 +35,13 @@ public class Main {
                     }
                 };
                 GameBoard g = new GameBoard(gameboardlistener);
-                Control c = new Control(g);
+                c = new Control(g);
                 
 	}
         
         private static void GUIActionPerformed(ActionEvent evt){
             System.out.println("Action Performed: "+evt.getActionCommand());
+			c.setDisk(Integer.parseInt(evt.getActionCommand()));
         }
 	
 }
