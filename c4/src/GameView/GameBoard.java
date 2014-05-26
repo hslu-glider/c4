@@ -32,6 +32,7 @@ public class GameBoard {
         createAndShowGUI();
         btnVsComputerActionPerformed();
         this.control = control;
+        myTurn=true;
     }
 
     //<editor-fold defaultstate="collapsed" desc="gameBoard Variables">
@@ -50,6 +51,7 @@ public class GameBoard {
     private static JButton btn_Close;
     private static GamePanel gamePanel;
     private static ActionListener control;
+    private static boolean myTurn;
     
     //</editor-fold>
 
@@ -481,6 +483,10 @@ public class GameBoard {
             gamePanel.startMoving();
         }
     }
+    
+    public void showWinChips(int[] winnerchips){
+        gamePanel.drawWinner(winnerchips);
+    }
 
     private void LoadComputers() {
         listPlayers.setModel(new AbstractListModel() {
@@ -528,6 +534,21 @@ public class GameBoard {
                 return strings[i];
             }
         });
+    }
+    
+    public void SwitchPlayer(){
+        myTurn=!myTurn;
+        lockControls();
+    }
+    
+    private void lockControls(){
+        btn_Row1.setEnabled(myTurn);
+        btn_Row2.setEnabled(myTurn);
+        btn_Row3.setEnabled(myTurn);
+        btn_Row4.setEnabled(myTurn);
+        btn_Row5.setEnabled(myTurn);
+        btn_Row6.setEnabled(myTurn);
+        btn_Row7.setEnabled(myTurn);
     }
     //</editor-fold>
 }
