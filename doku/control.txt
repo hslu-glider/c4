@@ -1,4 +1,4 @@
-# GameControl
+﻿# GameControl
 
 ## Allgemeine Beschreibung
 
@@ -30,11 +30,11 @@ Dieses setzt den Stein und meldet dem 'Control' zurück, dass der
 Spielzug geglückt ist. Sollte der Zug ungültig sein, wird der Stein 
 nicht gesetzt und der Spielzug verfällt.
 
-Nach erfolgreichem Setzen des Spielzuges wird der Zug an den entfernten
-Spieler gesendet mittels der aufgesetzten TCP-Verbindung.
+Nach erfolgreichem Setzen des Spielzuges wird der Zug entweder an den entfernten
+Spieler gesendet mittels der aufgesetzten TCP-Verbindung oder an den lokalen KI.
 
 Das Programm blockiert an dieser Stelle solange die Antwort des 
-entfernten Spielers ausbleibt.
+entfernten Spielers oder des KIs ausbleibt.
 
 Hat dieser seinen Spielzug gesetzt, wird dieser per TCP zurückgemeldet.
 Die Blockade wird aufgehoben und das Model wird über den Zug des 
