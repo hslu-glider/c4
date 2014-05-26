@@ -28,7 +28,7 @@ public class Opponent {
     
     public final static int LOCAL = 1;
     public final static int NETWORK = 2;
-    private final static int DEFAULT_LEVEL = 3;
+    private final static int DEFAULT_LEVEL = 4;
     private int opponent;
     private C4_KI ki;
     private Chip[][] gameField;

@@ -5,9 +5,11 @@
  */
 package GameView;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
@@ -48,35 +50,37 @@ public class GamePanel extends JPanel implements Runnable {
     @Override
     public synchronized void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2D = (Graphics2D) g;
         for (int r = 0; r < 7; r++) {
             for (int c = 0; c < 6; c++) {
                 for (int p = 0; p < 2; p++) {
                     if (p == 0) {
-                        g.setColor(Color.red);
+                        g2D.setColor(Color.red);
                     } else {
-                        g.setColor(Color.blue);
+                        g2D.setColor(Color.blue);
                     }
                     if (array[r][c][p] == 1) {
-                        g.fillOval(absX + (r * 78), absY + (c * 69), width, height);
-                        g.drawOval(absX + (r * 78), absY + (c * 69), width, height);
+                        g2D.fillOval(absX + (r * 78), absY + (c * 69), width, height);
+                        g2D.drawOval(absX + (r * 78), absY + (c * 69), width, height);
                     }
                 }
             }
 
-            if (isMoving()) {
-                if (player) {
-                    g.setColor(Color.red);
-                } else {
-                    g.setColor(Color.blue);
-                }
-                g.fillOval(posX, posY, width, height);
-                g.drawOval(posX, posY, width, height);
+        }
+        if (isMoving()) {
+            if (player) {
+                g2D.setColor(Color.red);
+            } else {
+                g2D.setColor(Color.blue);
             }
-            if (gameended) {
-                g.setColor(Color.black);
-                for (int i = 0; i < 8; i = i + 2) {
-                    g.drawOval(winnerchips[i], winnerchips[i + 1], width, height);
-                }
+            g2D.fillOval(posX, posY, width, height);
+            g2D.drawOval(posX, posY, width, height);
+        }
+        if (gameended) {
+            g2D.setColor(Color.black);
+            for (int i = 0; i < 8; i = i + 2) {
+                g2D.setStroke(new BasicStroke(10F));
+                g2D.drawOval(absX + (winnerchips[i] * 78), absY + (winnerchips[i + 1] * 69), width, height);
             }
         }
     }
