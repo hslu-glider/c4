@@ -41,19 +41,23 @@ public class C4_KI {
     public int KI_makeNextMove(int row_user){
         int row;
         gameField = Disc.placeUserDisc(row_user, gameField);
+        /*
         if(Eval.eval(gameField) < -500){
             return 10;
         }
+        * */
         abc.updateGameField(gameField);
         row = abc.getNextRow();
+        /*
         if (row != -1){
             gameField = Disc.placeKIDisc(row, gameField);
             if(Eval.eval(gameField) > 500){
                 return 20;
         }
-        }
+        * 
+        }*/
         /*-----------------------------*/
-        Plot.plot_GameField(gameField);   // for Tests
+        //Plot.plot_GameField(gameField);   // for Tests
         /*-----------------------------*/
         return row;
     }
