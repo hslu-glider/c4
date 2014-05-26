@@ -17,123 +17,103 @@
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 package GameModel;
 
 import java.awt.event.ActionEvent;
 import GameView.GameBoard;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author JanV Vonmoos
  */
-public class PlayBoard implements GameRulez
-{
-    private static final int xaxes=7;
-    private static final int yaxes=6;
+public class PlayBoard implements GameRulez {
+
+    private static final int xaxes = 7;
+    private static final int yaxes = 6;
     private Chip[][] playBoard;
-    private boolean currentuser=true;
+    private boolean currentuser = true;
     private GameBoard gameboard;
-    
+
     List<ModelListener> listeners = new ArrayList<ModelListener>();
-        
-    public PlayBoard() 
-    {
+
+    public PlayBoard() {
         playBoard = new Chip[yaxes][xaxes];
     }
-    
-    public PlayBoard(GameBoard gameboard) 
-    {
+
+    public PlayBoard(GameBoard gameboard) {
         playBoard = new Chip[yaxes][xaxes];
         this.gameboard = gameboard;
     }
-    
-    public PlayBoard(Chip playBoard[][], GameBoard gameboard) 
-    {
+
+    public PlayBoard(Chip playBoard[][], GameBoard gameboard) {
         this.playBoard = playBoard;
         this.gameboard = gameboard;
     }
-    
-    public void addListener(ModelListener toAdd) 
-    {
+
+    public void addListener(ModelListener toAdd) {
         listeners.add(toAdd);
     }
-          
-    
+
     @Override
-    public boolean didIWin() 
-    {
-        int [] winnset = new int[8];
-        int n=0;
-        
-        for(Chip[] s : playBoard)
-        {
+    public boolean didIWin() {
+        int[] winnset = new int[8];
+        int n = 0;
 
-            for(Chip val: s)
-            {
-                if(val != null)
-                {
-                     if(val.getWinnstone())
-                     {
-                         if(n<8)
-                         {
-                            winnset [n] = val.getx();
-                            n++;
-                            winnset [n] = val.gety();
-                            n++;
-                         }
-                         for (ModelListener hl : listeners)
-                         {
-                             hl.winnIsSet();
-                         }
+        for (Chip[] s : playBoard) {
 
-                     }
+            for (Chip val : s) {
+                if (val != null) {
+                    if (val.getWinnstone()) {
+                        if (n < 8) {
+                            winnset[n] = val.getx();
+                            n++;
+                            winnset[n] = val.gety();
+                            n++;
+                        }
+                        for (ModelListener hl : listeners) {
+                            hl.winnIsSet();
+                        }
+
+                    }
                 }
             }
         }
-    
-        if(n > 0)
-        {
+
+        if (n > 0) {
             gameboard.showWinChips(winnset);
             return true;
-        }
-        return false;    
-    }
-
-    @Override
-    public Chip[][] getBoard() 
-    {
-        return playBoard;
-    }
-
-    @Override
-    public Chip getSlot(int row, int col) 
-    {
-            return playBoard[row][col];   
-    }
-
-    @Override
-    public boolean isLegalInsert(int col) 
-    {
-        if(0<=col && col<7)
-        {
-        if (getSlot(0,col) == null)
-           {
-               return true;
-           }
         }
         return false;
     }
 
     @Override
-    public void clearboard() 
-    {
+    public Chip[][] getBoard() {
+        return playBoard;
+    }
+
+    @Override
+    public Chip getSlot(int row, int col) {
+        return playBoard[row][col];
+    }
+
+    @Override
+    public boolean isLegalInsert(int col) {
+        if (0 <= col && col < 7) {
+            if (getSlot(0, col) == null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void clearboard() {
         playBoard = new Chip[yaxes][xaxes];
-        for (ModelListener hl : listeners)
-        {
+        for (ModelListener hl : listeners) {
             hl.boardHasChanged(coppy2dArray());
         }
     }
@@ -144,30 +124,33 @@ public class PlayBoard implements GameRulez
     }
 
     @Override
-    public boolean insertChip(int player, int x) 
-    {
+    public boolean insertChip(int player, int x) {
         int y = 0;
-        if(isLegalInsert(x))
-        {
-            for(int n=1;n<6 ;n++)
-            {
-                if(playBoard[n][x]==null)
-                {
-                    y++;   
+        if (isLegalInsert(x)) {
+            for (int n = 1; n < 6; n++) {
+                if (playBoard[n][x] == null) {
+                    y++;
                 }
             }
-            playBoard[y][x] = new Chip(player, x , y, playBoard);
-            gameboard.insertDisc(x,y);
+            playBoard[y][x] = new Chip(player, x, y, playBoard);
             
-            for (ModelListener hl : listeners)
-            {
+            while(gameboard.checkRunning()) {
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(PlayBoard.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            gameboard.insertDisc(x, y, currentuser);
+
+            for (ModelListener hl : listeners) {
                 hl.boardHasChanged(coppy2dArray());
             }
-            
+
             switchPlayer();
             return true;
         }
-    return false;
+        return false;
     }
 
     @Override
@@ -176,28 +159,22 @@ public class PlayBoard implements GameRulez
     }
 
     @Override
-    public void switchPlayer() 
-    {
-             
-        if(currentuser)
-        {
-            currentuser=false;
-        }
-        else
-        {
-            currentuser=true;
+    public void switchPlayer() {
+
+        if (currentuser) {
+            currentuser = false;
+        } else {
+            currentuser = true;
         }
 
     }
-    
-    private Chip[][] coppy2dArray()
-    {
+
+    private Chip[][] coppy2dArray() {
         Chip[][] cppb = new Chip[yaxes][xaxes];
         int a = 0;
-               
-        for(Chip[] c1 : playBoard)
-        {
-            cppb[a]=c1;
+
+        for (Chip[] c1 : playBoard) {
+            cppb[a] = c1;
             a++;
         }
         return cppb;
