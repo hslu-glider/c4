@@ -143,6 +143,7 @@ public class PlayBoard implements GameRulez{
             gameboard.insertDisc(x, y, currentuser);
             gameboard.SwitchPlayer();
             switchPlayer();
+            didIWin();
             return true;
         }
         return false;
