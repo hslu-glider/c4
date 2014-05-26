@@ -21,29 +21,27 @@ import java.awt.event.ActionListener;
 public class Main {
 	
     private static ActionListener gameboardlistener;
+	private static Parser p;
+	private static Control c;
     
 	public static void main(String[] args) throws Exception {
-		Parser p = new Parser();
+		p = new Parser();
 		
 		
                 gameboardlistener = new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent evt){
-                        doThis(evt);
+                        GUIActionPerformed(evt);
                     }
                 };
                 GameBoard g = new GameBoard(gameboardlistener);
-                Control c = new Control(g);
-		/*p.waitForPlayer();
-		int temp = p.sendMove(2);
-		System.out.println(temp);
-		temp = p.sendMove(5);
-		System.out.println(temp);*/
+                c = new Control(g);
                 
 	}
         
-        private static void doThis(ActionEvent evt){
+        private static void GUIActionPerformed(ActionEvent evt){
             System.out.println("Action Performed: "+evt.getActionCommand());
+			c.setDisk(Integer.parseInt(evt.getActionCommand()));
         }
 	
 }

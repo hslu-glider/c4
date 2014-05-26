@@ -32,7 +32,7 @@ public class GameBoard {
         createAndShowGUI();
         btnVsComputerActionPerformed();
         this.control = control;
-        myTurn=true;
+        myTurn = true;
     }
 
     //<editor-fold defaultstate="collapsed" desc="gameBoard Variables">
@@ -52,9 +52,8 @@ public class GameBoard {
     private static GamePanel gamePanel;
     private static ActionListener control;
     private static boolean myTurn;
-    
-    //</editor-fold>
 
+    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="mainMenu Variables">
     private static JFrame mainMenu;
     private static JButton btnLoad;
@@ -100,7 +99,7 @@ public class GameBoard {
             }
 
         });
-        btn_Row1.setActionCommand("row1");
+        btn_Row1.setActionCommand("0");
         btn_Row1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -109,7 +108,7 @@ public class GameBoard {
             }
         });
 
-        btn_Row2.setActionCommand("row2");
+        btn_Row2.setActionCommand("1");
         btn_Row2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -118,7 +117,7 @@ public class GameBoard {
             }
         });
 
-        btn_Row3.setActionCommand("row3");
+        btn_Row3.setActionCommand("2");
         btn_Row3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -127,7 +126,7 @@ public class GameBoard {
             }
         });
 
-        btn_Row4.setActionCommand("row4");
+        btn_Row4.setActionCommand("3");
         btn_Row4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -136,7 +135,7 @@ public class GameBoard {
             }
         });
 
-        btn_Row5.setActionCommand("row5");
+        btn_Row5.setActionCommand("4");
         btn_Row5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -145,7 +144,7 @@ public class GameBoard {
             }
         });
 
-        btn_Row6.setActionCommand("row6");
+        btn_Row6.setActionCommand("5");
         btn_Row6.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -154,7 +153,7 @@ public class GameBoard {
             }
         });
 
-        btn_Row7.setActionCommand("row7");
+        btn_Row7.setActionCommand("6");
         btn_Row7.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -279,7 +278,7 @@ public class GameBoard {
         //gameBoard.pack();
         gameBoard.setVisible(false);
         //</editor-fold>
-        
+
         //<editor-fold defaultstate="collapsed" desc="Frame mainMenu">
         mainMenu = new JFrame("C4 - Main Menu");
         buttonPanel = new JPanel();
@@ -416,34 +415,34 @@ public class GameBoard {
     }
 
     private void btn_Row1ActionPerformed() {
-        insertDisc(0, 5);
+        //insertDisc(0, 5);
     }
 
     private void btn_Row2ActionPerformed() {
-        insertDisc(1, 5);
+        //insertDisc(1, 5);
     }
 
     private void btn_Row3ActionPerformed() {
-        insertDisc(2, 5);
+        //insertDisc(2, 5);
     }
 
     private void btn_Row4ActionPerformed() {
-        insertDisc(3, 5);
+        //insertDisc(3, 5);
     }
 
     private void btn_Row5ActionPerformed() {
-        insertDisc(4, 5);
+        //insertDisc(4, 5);
     }
 
     private void btn_Row6ActionPerformed() {
-        insertDisc(5, 5);
+        //insertDisc(5, 5);
     }
 
     private void btn_Row7ActionPerformed() {
-        insertDisc(6, 5);
+        //insertDisc(6, 5);
     }
-    
-    private void sendActionToControl(ActionEvent evt){
+
+    private void sendActionToControl(ActionEvent evt) {
         if (!gamePanel.thRunning()) {
             control.actionPerformed(evt);
         }
@@ -475,16 +474,16 @@ public class GameBoard {
         gameBoard.setVisible(true);
     }
     //</editor-fold>
-
+    
     //<editor-fold defaultstate="collapsed" desc="Methods">
-    public void insertDisc(int row, int column) {
+    public void insertDisc(int row, int column, boolean player) {
         if (!gamePanel.thRunning()) {
-            gamePanel.moveDisc(row, column);
+            gamePanel.moveDisc(row, column, player);
             gamePanel.startMoving();
         }
     }
-    
-    public void showWinChips(int[] winnerchips){
+
+    public void showWinChips(int[] winnerchips) {
         gamePanel.drawWinner(winnerchips);
     }
 
@@ -534,14 +533,15 @@ public class GameBoard {
                 return strings[i];
             }
         });
+
     }
-    
-    public void SwitchPlayer(){
-        myTurn=!myTurn;
+
+    public void SwitchPlayer() {
+        myTurn = !myTurn;
         lockControls();
     }
-    
-    private void lockControls(){
+
+    private void lockControls() {
         btn_Row1.setEnabled(myTurn);
         btn_Row2.setEnabled(myTurn);
         btn_Row3.setEnabled(myTurn);
@@ -549,6 +549,10 @@ public class GameBoard {
         btn_Row5.setEnabled(myTurn);
         btn_Row6.setEnabled(myTurn);
         btn_Row7.setEnabled(myTurn);
+    }
+    
+    public boolean checkRunning(){
+        return gamePanel.thRunning();
     }
     //</editor-fold>
 }
