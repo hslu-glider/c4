@@ -260,4 +260,14 @@ public class Chip {
     {
         return this.winnstone;
     }
+    
+    public int getx()
+    {
+        return this.xcord;
+    }
+    
+    public int gety()
+    {
+        return this.ycord;
+    }
 }

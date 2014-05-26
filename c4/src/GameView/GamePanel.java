@@ -19,11 +19,13 @@ public class GamePanel extends JPanel implements Runnable {
 
     //<editor-fold defaultstate="collapsed" desc="GamePanel Variables">
     private final int[][][] array = new int[7][6][2];
+    private int[] winnerchips = new int[8];
     private static final int absX = 59;
     private static final int absY = 30;
     private static final int width = 60;
     private static final int height = 60;
     private static boolean ismoving = false;
+    private static boolean gameended = false;
     private int row = 0;
     private int column = 0;
     private int posX = 59;
@@ -65,6 +67,12 @@ public class GamePanel extends JPanel implements Runnable {
                 g.fillOval(posX, posY, width, height);
                 g.drawOval(posX, posY, width, height);
             }
+            if(gameended){
+                g.setColor(Color.black);
+                for(int i=0;i<8;i=i+2){
+                    g.drawOval(winnerchips[i], winnerchips[i+1], width, height);
+                }
+            }
         }
     }
     //</editor-fold>
@@ -96,7 +104,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public synchronized void moveToEndPosition() {
+    public void moveToEndPosition() {
         if (posY < newPosY) {
             posY = posY + 4;
         } else {
@@ -108,7 +116,7 @@ public class GamePanel extends JPanel implements Runnable {
         array[x][y][player] = 1;
     }
 
-    public synchronized void startMoving() {
+    public void startMoving() {
         ismoving = true;
         if (th == null) {
             th = new Thread(this);
@@ -122,6 +130,12 @@ public class GamePanel extends JPanel implements Runnable {
         } else {
             return false;
         }
+    }
+    
+    public void drawWinner(int[] winnerchips){
+        this.winnerchips = winnerchips;
+        gameended=true;
+        this.repaint();
     }
     //</editor-fold>
 
