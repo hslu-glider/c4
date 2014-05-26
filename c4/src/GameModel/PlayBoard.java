@@ -21,6 +21,9 @@
 package GameModel;
 
 import java.awt.event.ActionEvent;
+import GameView.GameBoard;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -33,17 +36,32 @@ public class PlayBoard implements GameRulez
     private static final int yaxes=6;
     private Chip[][] playBoard;
     private boolean currentuser=true;
+    private GameBoard gameboard;
     
+    List<ModelListener> listeners = new ArrayList<ModelListener>();
+        
     public PlayBoard() 
     {
         playBoard = new Chip[yaxes][xaxes];
     }
     
-    public PlayBoard(Chip playBoard[][]) 
+    public PlayBoard(GameBoard gameboard) 
     {
-        this.playBoard = playBoard;
+        playBoard = new Chip[yaxes][xaxes];
+        this.gameboard = gameboard;
     }
     
+    public PlayBoard(Chip playBoard[][], GameBoard gameboard) 
+    {
+        this.playBoard = playBoard;
+        this.gameboard = gameboard;
+    }
+    
+    public void addListener(ModelListener toAdd) 
+    {
+        listeners.add(toAdd);
+    }
+          
     
     @Override
     public boolean didIWin() 
@@ -57,6 +75,10 @@ public class PlayBoard implements GameRulez
                {
                     if(val.getWinnstone())
                     {
+                        for (ModelListener hl : listeners)
+                        {
+                            hl.winnIsSet();
+                        }
                         return true;
                     }
                }
@@ -94,6 +116,10 @@ public class PlayBoard implements GameRulez
     public void clearboard() 
     {
         playBoard = new Chip[yaxes][xaxes];
+        for (ModelListener hl : listeners)
+        {
+            hl.boardHasChanged(coppy2dArray());
+        }
     }
 
     @Override
@@ -105,7 +131,7 @@ public class PlayBoard implements GameRulez
     public boolean insertChip(int player, int x) 
     {
         int y = 0;
-        if(isMyTurn() && isLegalInsert(x))
+        if(isLegalInsert(x))
         {
             for(int n=1;n<6 ;n++)
             {
@@ -115,6 +141,13 @@ public class PlayBoard implements GameRulez
                 }
             }
             playBoard[y][x] = new Chip(player, x , y, playBoard);
+            gameboard.insertDisc(x,y);
+            
+            for (ModelListener hl : listeners)
+            {
+                hl.boardHasChanged(coppy2dArray());
+            }
+            
             switchPlayer();
             return true;
         }
@@ -129,6 +162,7 @@ public class PlayBoard implements GameRulez
     @Override
     public void switchPlayer() 
     {
+             
         if(currentuser)
         {
             currentuser=false;
@@ -137,5 +171,19 @@ public class PlayBoard implements GameRulez
         {
             currentuser=true;
         }
+
+    }
+    
+    private Chip[][] coppy2dArray()
+    {
+        Chip[][] cppb = new Chip[yaxes][xaxes];
+        int a = 0;
+               
+        for(Chip[] c1 : playBoard)
+        {
+            cppb[a]=c1;
+            a++;
+        }
+        return cppb;
     }
 }
