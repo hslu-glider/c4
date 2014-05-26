@@ -23,6 +23,10 @@ package GameModel;
 /**
  *
  * @author Jan Vonmoos
+ * 
+ * Contains the values of a Chip in the Game.
+ * A Chip knows its owner, its coordinates and some informations about its neighbours.
+ * 
  */
 public class Chip {
     
