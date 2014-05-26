@@ -26,6 +26,7 @@ public class GamePanel extends JPanel implements Runnable {
     private static final int height = 60;
     private static boolean ismoving = false;
     private static boolean gameended = false;
+    private static boolean player = true;
     private int row = 0;
     private int column = 0;
     private int posX = 59;
@@ -63,38 +64,47 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (isMoving()) {
-                g.setColor(Color.red);
+                if (player) {
+                    g.setColor(Color.red);
+                } else {
+                    g.setColor(Color.blue);
+                }
                 g.fillOval(posX, posY, width, height);
                 g.drawOval(posX, posY, width, height);
             }
-            if(gameended){
+            if (gameended) {
                 g.setColor(Color.black);
-                for(int i=0;i<8;i=i+2){
-                    g.drawOval(winnerchips[i], winnerchips[i+1], width, height);
+                for (int i = 0; i < 8; i = i + 2) {
+                    g.drawOval(winnerchips[i], winnerchips[i + 1], width, height);
                 }
             }
         }
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Methods">
     public boolean isMoving() {
         return ismoving;
     }
 
-    public void moveDisc(int x, int y) {
+    public void moveDisc(int x, int y, boolean player) {
+        this.player = player;
         row = x;
         column = y;
         posX = 59 + ((row) * 78);
         newPosY = 30 + ((column) * 69);
+
         //somethingChanged(true);
         //notifyAll();
-
         //th = null;
     }
 
     public void movedDisc() {
-        insertDisc(row, column, 0);
+        if (player) {
+            insertDisc(row, column, 0);
+        } else {
+            insertDisc(row, column, 1);
+        }
         posX = absX;
         posY = absY;
         ismoving = false;
@@ -123,7 +133,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
         th.start();
     }
-    
+
     public boolean thRunning() {
         if (th != null) {
             return th.isAlive();
@@ -131,10 +141,10 @@ public class GamePanel extends JPanel implements Runnable {
             return false;
         }
     }
-    
-    public void drawWinner(int[] winnerchips){
+
+    public void drawWinner(int[] winnerchips) {
         this.winnerchips = winnerchips;
-        gameended=true;
+        gameended = true;
         this.repaint();
     }
     //</editor-fold>
