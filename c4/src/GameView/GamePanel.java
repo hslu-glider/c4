@@ -82,6 +82,8 @@ public class GamePanel extends JPanel implements Runnable {
                 g2D.setStroke(new BasicStroke(10F));
                 g2D.drawOval(absX + (winnerchips[i] * 78), absY + (winnerchips[i + 1] * 69), width, height);
             }
+            player=false;
+           
         }
     }
     //</editor-fold>

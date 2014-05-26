@@ -59,7 +59,9 @@ public class GameBoard {
     private static JButton btnLoad;
     private static JButton btnStart;
     private static JButton btnVsComputer;
-    private static JButton btnVsPlayer;
+    private static JButton btnHostGame;
+    private static JButton btnJoinGame;
+    
     private static JPanel buttonPanel;
     private static JScrollPane jScrollPane1;
     private static JPanel listPanel;
@@ -283,7 +285,9 @@ public class GameBoard {
         mainMenu = new JFrame("C4 - Main Menu");
         buttonPanel = new JPanel();
         btnVsComputer = new JButton();
-        btnVsPlayer = new JButton();
+        btnHostGame = new JButton();
+        btnJoinGame = new JButton();
+        
         btnLoad = new JButton();
         btnStart = new JButton();
         listPanel = new JPanel();
@@ -297,13 +301,23 @@ public class GameBoard {
                 btnVsComputerActionPerformed();
             }
         });
-
-        btnVsPlayer.setText("vs Player");
-        btnVsPlayer.setActionCommand("SearchPlayer");
-        btnVsPlayer.addActionListener(new ActionListener() {
+        
+        btnHostGame.setText("Host Game");
+        btnHostGame.setActionCommand("host");
+        btnHostGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                btnVsPlayerActionPerformed();
+                btnHostGameActionPerformed();
+                control.actionPerformed(evt);
+            }
+        });
+        
+        btnJoinGame.setText("Join Game");
+        btnJoinGame.setActionCommand("join");
+        btnJoinGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                btnJoinGameActionPerformed();
                 control.actionPerformed(evt);
             }
         });
@@ -339,7 +353,8 @@ public class GameBoard {
                         .addContainerGap()
                         .addGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                                 .addComponent(btnVsComputer, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnVsPlayer, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnHostGame, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnJoinGame, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnLoad, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnStart, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -350,7 +365,9 @@ public class GameBoard {
                         .addContainerGap()
                         .addComponent(btnVsComputer)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnVsPlayer)
+                        .addComponent(btnHostGame)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnJoinGame)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnLoad)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -454,22 +471,33 @@ public class GameBoard {
 
     private void btnVsComputerActionPerformed() {
         btnVsComputer.setBackground(Color.red);
-        btnVsPlayer.setBackground(null);
         btnLoad.setBackground(null);
+        btnHostGame.setBackground(null);
+        btnJoinGame.setBackground(null);
         LoadComputers();
     }
-
-    private void btnVsPlayerActionPerformed() {
+    
+    private void btnHostGameActionPerformed() {
         btnVsComputer.setBackground(null);
-        btnVsPlayer.setBackground(Color.red);
         btnLoad.setBackground(null);
+        btnHostGame.setBackground(Color.red);
+        btnJoinGame.setBackground(null);
+        LoadPlayers();
+    }
+    
+    private void btnJoinGameActionPerformed(){
+        btnVsComputer.setBackground(null);
+        btnLoad.setBackground(null);
+        btnHostGame.setBackground(null);
+        btnJoinGame.setBackground(Color.red);
         LoadPlayers();
     }
 
     private void btnLoadActionPerformed() {
         btnVsComputer.setBackground(null);
-        btnVsPlayer.setBackground(null);
         btnLoad.setBackground(Color.red);
+        btnHostGame.setBackground(null);
+        btnJoinGame.setBackground(null);
         LoadGames();
     }
 
