@@ -148,6 +148,7 @@ public class PlayBoard implements GameRulez {
             }
 
             switchPlayer();
+            didIWin();
             return true;
         }
         return false;

@@ -1,0 +1,71 @@
+Game Model: Klasse PlayBoard
+
+Zweck
+Die Klasse PlayBoard erzeugt ein 2D Array welches als Speicher von Chip-Objekten dient. Diese erbt die Methoden von Interface GameRulez. Als Konstruktionsparameter benötigt dieses das Gameboard vom View. 
+Variabeln:
+private static final int xaxes=7;
+Statische x-Grösse des Spielfelds.
+private static final int yaxes=6;
+Statische y-Grösse des Spielfelds.
+private Chip[][] playBoard;
+2D Array Spielfeld
+private boolean currentuser=true;
+Zeigt an ob sie an der Reihe sind. 
+private GameBoard gameboard;
+Initialisierung der vom View erzeugten Benutzeroberfläche. 
+
+Methoden
+public boolean didIWin()
+Durchsucht das 2D Array nach Chip Objekten welche die Winnstone Variabel gesetzt haben. Sollte dies der Fall sein wird ein Array mit den Gewinnsteinkoordinaten an das View übermittelt und ein „true“ zurückgemeldet.  
+public Chip[][] getBoard()
+Übergibt das 2D Array playBoard.
+public Chip getSlot(int row, int col)
+Übergibt das Chip-Objekt an der Stelle x = col, y = row.
+public boolean isLegalInsert(int col)
+Gibt Rückmeldung ob das einfügen eines neuen Chip Objekt an der x Koordinate col möglich ist. 
+public void clearboard()
+Überschreibt das aktuelle 2D Array mit einem Leeren 2D Array.
+public boolean insertChip(int player, int x)
+Methode zum einfügen neuer Chip-Objekte. Benötigt die Spieleridentifikation „player“ und die einzufügende Kolonne „x“. jedes mal wenn ein Neuer Chip eingefügt wurde, wird dies auch dem „View“ mitgeteilt. Das „Controll“ erhält Rückmeldung ob das Einfügen funktioniert hat.   
+public void switchPlayer()
+Die Methode dient dazu die Variabel „boolean currentuser“ umzuschalten. die Variable hat noch keinen weiteren anwendungszweck, wird aber bei der Durchführung der Methode „insertChip“ standartmässig ausgeführt. 
+
+Game Model: Klasse Chip
+Zweck
+Die Chip Klasse definiert wie Chip Objekte, die in das 2D Array von PlayBoard eingefügt werden, aussehen, bei welcher Koordinate sie stehen und welche Nachbarn sie haben. Bei der Erzeugung wird zudem Festgelegt ob der Chip ein Gewinnchip ist und welche seiner Nachbarn es werden. 
+Variablen
+private int owner;
+Gibt Auskunft über den Besitzer des Chips.
+private int xcord;
+x Koordinate des Chips.  
+private int ycord;
+y Koordinate des Chips.
+private boolean winnstone=false;
+Gibt an, ob der Chip gewinnrelevant ist. 
+private int nbr…*;
+Alle „nbr“ Variablen geben an wie viele Nachbarn mit demselben Besitze sie in die Jeweilige Richtung haben.
+Methoden
+private void calculateNbr(Chip PlayBoard[][])
+Wird mit dem erstellen des Chips aufgerufen. Diese steuert die Berechnung der Nachbarvariablen auf dem Neuen Chip, welche Rekursiv auf benachbarte Chips weiteregegeben werden. 
+private void winnChip(Chip PlayBoard[][])
+Nach der Kalkulation der Nachbarn wird zudem überprüft ob der Chip Gewinnrelevant ist und wenn ja, welche seiner Nachbarn es zudem geworden sind. 
+public int getOwner()
+Übermittelt die ID des Besitzers (normalerweise 1 = eigener stein, 2 = gegnerstein).
+public boolean getWinnstone()
+Gibt Auskunft ob der Chip Gewinnrelevant ist. 
+
+
+
+
+Game Model: interface GameRulez
+Zweck 
+Interface für die Methoden welche die Spielregeln beschreiben. Die Methoden werden vorläufig nur von der Klasse PlayBoard benutzt.
+
+Game Model: interface ModelListener
+Zweck
+Interface für das Registrieren der Listener im „Model“.
+Methoden
+public void boardHasChanged(Chip[][] playBoard);
+Interface Methode zur Übermittlung der Information, falls der Inhalt des 2D Array ändert und übergibt diese.
+public void winnIsSet();
+Interface Methode zur Übermittlung der Information, falls ein Gewinnrelevanter Chip entdeckt wurde.
