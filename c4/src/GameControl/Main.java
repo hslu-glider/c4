@@ -40,9 +40,19 @@ public class Main {
     private static void GUIActionPerformed(ActionEvent evt) {
         System.out.println("Action Performed: " + evt.getActionCommand());
         try{
-            c.setDisk(Integer.parseInt(evt.getActionCommand()));
+			switch(evt.getActionCommand()){
+				case "join":
+					c.setDisk(p.connectToPlayer(p.searchPlayer()));
+					break;
+				case "host":
+					c.waitForNetworkPlayer();
+					break;
+				default:
+					c.setDisk(Integer.parseInt(evt.getActionCommand()));
+					break;
+			}
         }
-        catch(NumberFormatException nfex){}
+        catch(Exception nfex){}
             
         
 
