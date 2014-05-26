@@ -10,6 +10,7 @@ import GameControl.*;
 import GameControl.network.Server;
 import GameControl.parser.Parser;
 import java.io.IOException;
+import GameView.*;
 
 /**
  *
@@ -18,7 +19,7 @@ import java.io.IOException;
 public class Main {
 	
 	public static void main(String[] args) throws Exception {
-		
+		GameBoard g = new GameBoard();
 		Parser p = new Parser();
 		
 		

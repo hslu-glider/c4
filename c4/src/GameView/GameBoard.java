@@ -28,9 +28,10 @@ import javax.swing.ListSelectionModel;
  */
 public class GameBoard {
 
-    public GameBoard() {
+    public GameBoard(ActionListener control) {
         createAndShowGUI();
         btnVsComputerActionPerformed();
+        this.control = control;
     }
 
     //<editor-fold defaultstate="collapsed" desc="gameBoard Variables">
@@ -48,6 +49,8 @@ public class GameBoard {
     private static JButton btn_Row7;
     private static JButton btn_Close;
     private static GamePanel gamePanel;
+    private static ActionListener control;
+    
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="mainMenu Variables">
@@ -95,52 +98,65 @@ public class GameBoard {
             }
 
         });
-
+        btn_Row1.setActionCommand("row1");
         btn_Row1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
+                sendActionToControl(evt);
                 btn_Row1ActionPerformed();
             }
         });
 
+        btn_Row2.setActionCommand("row2");
         btn_Row2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
+                sendActionToControl(evt);
                 btn_Row2ActionPerformed();
             }
         });
 
+        btn_Row3.setActionCommand("row3");
         btn_Row3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
+                sendActionToControl(evt);
                 btn_Row3ActionPerformed();
             }
         });
 
+        btn_Row4.setActionCommand("row4");
         btn_Row4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
+                sendActionToControl(evt);
                 btn_Row4ActionPerformed();
             }
         });
 
+        btn_Row5.setActionCommand("row5");
         btn_Row5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
+                sendActionToControl(evt);
                 btn_Row5ActionPerformed();
             }
         });
 
+        btn_Row6.setActionCommand("row6");
         btn_Row6.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
+                sendActionToControl(evt);
                 btn_Row6ActionPerformed();
             }
         });
 
+        btn_Row7.setActionCommand("row7");
         btn_Row7.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
+                sendActionToControl(evt);
                 btn_Row7ActionPerformed();
             }
         });
@@ -424,6 +440,12 @@ public class GameBoard {
     private void btn_Row7ActionPerformed() {
         insertDisc(6, 5);
     }
+    
+    private void sendActionToControl(ActionEvent evt){
+        if (!gamePanel.thRunning()) {
+            control.actionPerformed(evt);
+        }
+    }
 
     private void btnVsComputerActionPerformed() {
         btnVsComputer.setBackground(Color.red);
@@ -453,7 +475,7 @@ public class GameBoard {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Methods">
-    private synchronized void insertDisc(int row, int column) {
+    public void insertDisc(int row, int column) {
         if (!gamePanel.thRunning()) {
             gamePanel.moveDisc(row, column);
             gamePanel.startMoving();
