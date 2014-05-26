@@ -62,6 +62,7 @@ public class C4_KI {
      * main for Tests
      * @param args the command line arguments
      */
+    /*
     public static void main(String[] args) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int eingabe = 0;   
@@ -93,4 +94,5 @@ public class C4_KI {
         catch (IOException e){}
         }
     }
+    * */
 }

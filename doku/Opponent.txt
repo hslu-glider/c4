@@ -1,0 +1,29 @@
+# Opponent
+
+## Allgemeine Beschreibung
+
+Das 'Opponent' package beinhaltet mehrer Funktionsgruppen:
+
+  * KI Kontrolle		'C4_KI.java'
+  * KI-Algorithmus      	'Alpha_Beta_Cut.java'
+  * Spielzugbewertung   	'Eval.java'
+  * Spielstein   		'Disc.java'
+  * Baumstruktur            	'MoveNode.java'
+  * Anzeige für Testzwecke      'Plot.java'
+
+Der Opponent läuft hauptsächlich autonom. Er hat nur eine public Mehtode:
+
+public int getNextMove(int row){}
+
+Dabei wird dem KI der letzte Spielzug übergeben und der KI liefert den nächsten Spielzug zurück.
+
+## Funktionsweise des KI
+
+Bei KI wird ein sogenannter Alpha-Beta-Cut-Algorithmus eingesetzt. Dabei handelt es sich um eine intelligentere Version eines Minimax-Algorithmus.
+Für eine Spielrunde werden alle möglichen Spielzüge durchgegangen und anschliessend Bewertet. Dabei werden die Vorteile für den KI positiv bewertet, Vorteile des Gegners (hier der lokalen Spieler) negativ.
+Dies kann für mehrere aufeinanderfolgende Runden berechnet werden, was eine Baumstruktur ergibt. Die höherer Baumebene übernimmt immer den höchsten und niedrigsten Wert. Am Schluss wird der Spielstein an dem Ort gesetzt, welcher für den KI am vorteilhaftesten ist.
+
+## Spielfeldbewertung
+
+Die Bewertung erfolgt in einer einfachen Variante ohne eingebaute Strategien. Dabei wird jede Position des Spielfeldes abgefahren und falls ein Spielstein detektiert wird, wird nach rechts, oben und diagonal nach oben geschaut ob dieser Spielstein gleiche Nachbarn besitzt. 
+Sind vier Spielsteine in einer Reihe, so wird ein vielfaches (hier mal 1000) gesetzt um eine Sieg eindeutig zu detektieren. Das verhindern eines Gegnerischen Sieges wird dabei mehr gewichtet als ein eigener Sieg.
