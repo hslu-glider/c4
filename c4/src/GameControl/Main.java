@@ -11,6 +11,8 @@ import GameControl.network.Server;
 import GameControl.parser.Parser;
 import java.io.IOException;
 import GameView.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -18,17 +20,30 @@ import GameView.*;
  */
 public class Main {
 	
+    private static ActionListener gameboardlistener;
+    
 	public static void main(String[] args) throws Exception {
-		GameBoard g = new GameBoard();
 		Parser p = new Parser();
 		
 		
-		
-		p.waitForPlayer();
+                gameboardlistener = new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent evt){
+                        doThis(evt);
+                    }
+                };
+                GameBoard g = new GameBoard(gameboardlistener);
+                Control c = new Control(g);
+		/*p.waitForPlayer();
 		int temp = p.sendMove(2);
 		System.out.println(temp);
 		temp = p.sendMove(5);
-		System.out.println(temp);
+		System.out.println(temp);*/
+                
 	}
+        
+        private static void doThis(ActionEvent evt){
+            System.out.println("Action Performed: "+evt.getActionCommand());
+        }
 	
 }
