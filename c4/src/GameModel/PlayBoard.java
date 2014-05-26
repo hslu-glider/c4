@@ -21,6 +21,7 @@
 package GameModel;
 
 import java.awt.event.ActionEvent;
+import GameView.GameBoard;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class PlayBoard implements GameRulez
     private static final int yaxes=6;
     private Chip[][] playBoard;
     private boolean currentuser=true;
+    private GameBoard gameboard;
     
     List<ModelListener> listeners = new ArrayList<ModelListener>();
         
@@ -43,9 +45,16 @@ public class PlayBoard implements GameRulez
         playBoard = new Chip[yaxes][xaxes];
     }
     
-    public PlayBoard(Chip playBoard[][]) 
+    public PlayBoard(GameBoard gameboard) 
+    {
+        playBoard = new Chip[yaxes][xaxes];
+        this.gameboard = gameboard;
+    }
+    
+    public PlayBoard(Chip playBoard[][], GameBoard gameboard) 
     {
         this.playBoard = playBoard;
+        this.gameboard = gameboard;
     }
     
     public void addListener(ModelListener toAdd) 
