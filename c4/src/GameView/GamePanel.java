@@ -107,11 +107,11 @@ public class GamePanel extends JPanel implements Runnable {
         }
         posX = absX;
         posY = absY;
-        ismoving = false;
         th.interrupt();
         while (th != null) {
             th = null;
         }
+        ismoving = false;
     }
 
     public void moveToEndPosition() {

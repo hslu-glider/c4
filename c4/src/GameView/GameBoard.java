@@ -299,10 +299,12 @@ public class GameBoard {
         });
 
         btnVsPlayer.setText("vs Player");
+        btnVsPlayer.setActionCommand("SearchPlayer");
         btnVsPlayer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 btnVsPlayerActionPerformed();
+                control.actionPerformed(evt);
             }
         });
 
@@ -311,10 +313,12 @@ public class GameBoard {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 btnLoadActionPerformed();
+                control.actionPerformed(evt);
             }
         });
 
         btnStart.setText("Start");
+        btnStart.setActionCommand("GameStart");
         btnStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -551,8 +555,8 @@ public class GameBoard {
         btn_Row7.setEnabled(myTurn);
     }
     
-    public boolean checkRunning(){
-        return gamePanel.thRunning();
+    public boolean isMoving(){
+        return gamePanel.isMoving();
     }
     //</editor-fold>
 }

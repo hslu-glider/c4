@@ -5,7 +5,6 @@ package GameControl;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import GameControl.*;
 import GameControl.network.Server;
 import GameControl.parser.Parser;
@@ -19,29 +18,34 @@ import java.awt.event.ActionListener;
  * @author ninux
  */
 public class Main {
-	
+
     private static ActionListener gameboardlistener;
-	private static Parser p;
-	private static Control c;
-    
-	public static void main(String[] args) throws Exception {
-		p = new Parser();
-		
-		
-                gameboardlistener = new ActionListener(){
-                    @Override
-                    public void actionPerformed(ActionEvent evt){
-                        GUIActionPerformed(evt);
-                    }
-                };
-                GameBoard g = new GameBoard(gameboardlistener);
-                c = new Control(g);
-                
-	}
-        
-        private static void GUIActionPerformed(ActionEvent evt){
-            System.out.println("Action Performed: "+evt.getActionCommand());
-			c.setDisk(Integer.parseInt(evt.getActionCommand()));
+    private static Parser p;
+    private static Control c;
+
+    public static void main(String[] args) throws Exception {
+        p = new Parser();
+
+        gameboardlistener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                GUIActionPerformed(evt);
+            }
+        };
+        GameBoard g = new GameBoard(gameboardlistener);
+        c = new Control(g);
+
+    }
+
+    private static void GUIActionPerformed(ActionEvent evt) {
+        System.out.println("Action Performed: " + evt.getActionCommand());
+        try{
+            c.setDisk(Integer.parseInt(evt.getActionCommand()));
         }
-	
+        catch(NumberFormatException nfex){}
+            
+        
+
+    }
+
 }

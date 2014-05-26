@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  *
  * @author JanV Vonmoos
  */
-public class PlayBoard implements GameRulez {
+public class PlayBoard implements GameRulez{
 
     private static final int xaxes = 7;
     private static final int yaxes = 6;
@@ -38,7 +38,6 @@ public class PlayBoard implements GameRulez {
     private boolean currentuser = true;
     private GameBoard gameboard;
 
-    List<ModelListener> listeners = new ArrayList<ModelListener>();
 
     public PlayBoard() {
         playBoard = new Chip[yaxes][xaxes];
@@ -133,20 +132,8 @@ public class PlayBoard implements GameRulez {
                 }
             }
             playBoard[y][x] = new Chip(player, x, y, playBoard);
-            
-            while(gameboard.checkRunning()) {
-                try {
-                    Thread.sleep(20);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(PlayBoard.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
             gameboard.insertDisc(x, y, currentuser);
-
-            for (ModelListener hl : listeners) {
-                hl.boardHasChanged(coppy2dArray());
-            }
-
+            
             switchPlayer();
             return true;
         }
