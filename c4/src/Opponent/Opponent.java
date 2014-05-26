@@ -19,6 +19,8 @@
  */
 package Opponent;
 
+import GameModel.Chip;
+
 /**
  * @author Michael Müller michael.mueller.02@stud.hslu.ch
  */
@@ -29,7 +31,20 @@ public class Opponent {
     private final static int DEFAULT_LEVEL = 3;
     private int opponent;
     private C4_KI ki;
+    private Chip[][] gameField;
     
+    public Opponent(){
+        opponent = LOCAL;
+        ki = new C4_KI(DEFAULT_LEVEL);
+    }
+    /*
+    public Opponent(int opponent){
+        this.opponent = opponent;
+        if(opponent == LOCAL){
+            ki = new C4_KI(DEFAULT_LEVEL);
+        }
+        addModelListener(this);
+    }
     
     public Opponent(int opponent, int level){
         this.opponent = opponent;
@@ -38,22 +53,41 @@ public class Opponent {
         }
         addModelListener(this);
     }
+    */
+    public int getNextMove(int row){
+        return ki.KI_makeNextMove(row);
+    }
+    
+    /*
+    public void changeOpponent(int opponent){
+        this.opponent = opponent;
+    }
+    
+    private int getUserMove(Chip[][] gameBoard){
+        for(int y = 6; y >= 0; y--){
+            for(int x = 0; x < 7; x++){
+                if(gameBoard[y][x].equals(gameField[y][x])){
+                    return x;
+                }
+            }
+        }
+        gameField = gameBoard;
+        return -1;
+    }
     
     @Override
-    public void UserMadeMove(ModelEvent e){
-        int userMove = 0;
-        int kiMove = 0;
+    public void ModelHasChanged(Chip[][] gameBoard){
+        int kiMove;
         if(opponent == NETWORK){
-            GameControl.getNetworkMove();
+            Control.OpponentMove(-1);
         }
         else if(opponent == LOCAL){
-            kiMove = ki.KI_makeNextMove(userMove);
-            GameControl.nextKiMove(kiMove);
+            kiMove = ki.KI_makeNextMove(getUserMove(gameBoard));
+            Control.OpponentMove(kiMove);
         }
     }
     
     @Override
-    public void LevelChanged(ModelEvent e){
-        level = e;
-    }
+    public void WinnerIsSet(){}
+    * */
 }

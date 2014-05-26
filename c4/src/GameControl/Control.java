@@ -3,11 +3,9 @@ package GameControl;
 
 import GameControl.parser.*;
 import GameModel.PlayBoard;
+import Opponent.Opponent;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -19,15 +17,16 @@ public class Control implements Communication {
 	// private SaveGame savedGame;
 	
 	private Parser parser;
+        private Opponent op;
 	
 	private static int LOCAL = 1;
 	private static int REMOTE = 2;
-	
 	private int opponent = LOCAL;
 	
 	public Control() throws IOException{
 		parser = new Parser();
 		board = new PlayBoard();
+                op = new Opponent();
 		// savedGame = new SaveGame();
 	}
 
@@ -35,9 +34,16 @@ public class Control implements Communication {
 	public int setDisk(int row) {
 		try {
 			if(board.insertChip(LOCAL, row)){
+                            if(opponent == REMOTE){
 				int answer = parser.sendMove(row);
 				board.insertChip(REMOTE, answer);
 				return answer;
+                            }
+                            else{
+                                int answer = op.getNextMove(row);
+				board.insertChip(REMOTE, answer);
+				return answer;
+                            }
 			}
 		} catch (Exception ex) {
 			
