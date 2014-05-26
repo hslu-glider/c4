@@ -100,7 +100,7 @@ public class GameBoard {
             }
 
         });
-        btn_Row1.setActionCommand("row1");
+        btn_Row1.setActionCommand("1");
         btn_Row1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -109,7 +109,7 @@ public class GameBoard {
             }
         });
 
-        btn_Row2.setActionCommand("row2");
+        btn_Row2.setActionCommand("2");
         btn_Row2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -118,7 +118,7 @@ public class GameBoard {
             }
         });
 
-        btn_Row3.setActionCommand("row3");
+        btn_Row3.setActionCommand("3");
         btn_Row3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -127,7 +127,7 @@ public class GameBoard {
             }
         });
 
-        btn_Row4.setActionCommand("row4");
+        btn_Row4.setActionCommand("4");
         btn_Row4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -136,7 +136,7 @@ public class GameBoard {
             }
         });
 
-        btn_Row5.setActionCommand("row5");
+        btn_Row5.setActionCommand("5");
         btn_Row5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -145,7 +145,7 @@ public class GameBoard {
             }
         });
 
-        btn_Row6.setActionCommand("row6");
+        btn_Row6.setActionCommand("6");
         btn_Row6.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -154,7 +154,7 @@ public class GameBoard {
             }
         });
 
-        btn_Row7.setActionCommand("row7");
+        btn_Row7.setActionCommand("7");
         btn_Row7.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
