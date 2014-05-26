@@ -66,25 +66,41 @@ public class PlayBoard implements GameRulez
     @Override
     public boolean didIWin() 
     {
-       for(Chip[] s : playBoard)
-       {
-           
-           for(Chip val: s)
-           {
-               if(val != null)
-               {
-                    if(val.getWinnstone())
-                    {
-                        for (ModelListener hl : listeners)
-                        {
-                            hl.winnIsSet();
-                        }
-                        return true;
-                    }
-               }
-           }
-       }
-    return false;    
+        int [] winnset = new int[8];
+        int n=0;
+        
+        for(Chip[] s : playBoard)
+        {
+
+            for(Chip val: s)
+            {
+                if(val != null)
+                {
+                     if(val.getWinnstone())
+                     {
+                         if(n<8)
+                         {
+                            winnset [n] = val.getx();
+                            n++;
+                            winnset [n] = val.gety();
+                            n++;
+                         }
+                         for (ModelListener hl : listeners)
+                         {
+                             hl.winnIsSet();
+                         }
+
+                     }
+                }
+            }
+        }
+    
+        if(n > 0)
+        {
+            gameboard.showWinChips(winnset);
+            return true;
+        }
+        return false;    
     }
 
     @Override
