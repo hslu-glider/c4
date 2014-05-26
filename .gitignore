@@ -1,7 +1,7 @@
 # some netbeans specific files
 nbproject/*
-!project.properties
-!project.xml
+#!project.properties
+#!project.xml
 build/*
 nbbuild/*
 dist/*
