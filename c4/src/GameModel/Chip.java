@@ -23,6 +23,10 @@ package GameModel;
 /**
  *
  * @author Jan Vonmoos
+ * 
+ * Contains the values of a Chip in the Game.
+ * A Chip knows its owner, its coordinates and some informations about its neighbours.
+ * 
  */
 public class Chip {
     
@@ -181,7 +185,7 @@ public class Chip {
     return count;
     }
     
-    public void calculateNbr(Chip PlayBoard[][])
+    private void calculateNbr(Chip PlayBoard[][])
     {
         calNbrR(PlayBoard);
         calNbrL(PlayBoard);
@@ -192,7 +196,7 @@ public class Chip {
         calNbrDBL(PlayBoard);
     }
     
-    public void winnChip(Chip PlayBoard[][])
+    private void winnChip(Chip PlayBoard[][])
     {
         if(nbrright+nbrleft>=3)
         {
@@ -239,7 +243,7 @@ public class Chip {
             {
                 PlayBoard[this.ycord+n][this.xcord+n].setWinnstone();
             }
-            
+              
         }
        
     }

@@ -20,33 +20,18 @@
 
 package GameModel;
 
-import java.awt.event.ActionEvent;
+import java.util.*;
 
 /**
  *
- * @author Jan Vonmoos
+ * @author Jan
+ * 
+ * Interface for the communication with other programmparts.
+ * Accounciations if someone winns the game or the board has changed.
+ * 
  */
-public interface GameRulez {
-    
-    
-    public boolean didIWin();
-    
-    public Chip[][] getBoard ();
-    
-    public Chip getSlot(int row, int col);
-    
-    public boolean isLegalInsert (int col);
-    
-    public void clearboard ();
-    
-    public boolean isMyTurn();
-    
-    public boolean insertChip(int player, int x);
-    
-    public void actionPerformed(ActionEvent e);
-    
-    public void switchPlayer();
-    
-    
-    
+public interface ModelListener 
+{
+    public void boardHasChanged(Chip[][] playBoard);
+    public void winnIsSet();
 }
