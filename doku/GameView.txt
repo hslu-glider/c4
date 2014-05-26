@@ -1,0 +1,17 @@
+# GameView
+
+## Allgemeine Beschreibung
+
+Das 'GameView' package beinhaltet folgende Klassen:
+
+  * GameBoard		'GameBoard.java'
+  * GamePanel		'GamePanel.java'
+
+## Klasse GameBoard
+
+Ist für die Darstellung des GUI zuständig und erstellt alle Container und Komponenten
+
+## Klasse GamePanel
+
+Ist für das Zeichnen des Spielfeldes verantwortlich und ist dem GameBoard angehängt
+Behandelt auch das Bewegen der Spielsteine in einem seperaten Thread.
