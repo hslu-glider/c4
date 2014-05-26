@@ -1,0 +1,47 @@
+# GameControl
+
+## Allgemeine Beschreibung
+
+Das 'GameControl' package beinhaltet mehrer Funktionsgruppen:
+
+  * Spielkontrolle    'Control.java'
+  * TCP Server        'Server.java'
+  * TCP Client        'Client.java'
+  * UDP (Broadcast)   'UDP'
+  * Parser            'Parser.java'
+
+Beim Spielstart wird ein 'Control' Objekt instanziert. Dieses
+erstellt alle übrigen Objekte und setzt die Listener untereinander.
+
+Der lokale Spieler übergibt mittels der GUI alle Informationen an 
+das 'Control' Objekt. Dieses leitet diese dann um bzw. weiter.
+
+## Spielkontrolle
+
+Der lokale Spieler setzt einen Stein mittels der GUI. Diese macht einen
+Methodenaufruf auf das 'Control' mit der Angabe der Spalte, in welcher
+der Stein zu setzen ist. 
+
+'Control' versucht den Spielzug durchzuführen mittels einer Weiterleitung
+an das 'Model'. Da der Spielzug nur vom lokalen Spieler durchführbar ist,
+kann das 'Model' über den Sender informiert werden. 
+
+Dieses setzt den Stein und meldet dem 'Control' zurück, dass der 
+Spielzug geglückt ist. Sollte der Zug ungültig sein, wird der Stein 
+nicht gesetzt und der Spielzug verfällt.
+
+Nach erfolgreichem Setzen des Spielzuges wird der Zug an den entfernten
+Spieler gesendet mittels der aufgesetzten TCP-Verbindung.
+
+Das Programm blockiert an dieser Stelle solange die Antwort des 
+entfernten Spielers ausbleibt.
+
+Hat dieser seinen Spielzug gesetzt, wird dieser per TCP zurückgemeldet.
+Die Blockade wird aufgehoben und das Model wird über den Zug des 
+Gegeners informiert und setzt den Spielzug.
+
+## Parser
+
+Der Parser ist die Kommunikationbrücke zwischen der Spielkontrolle
+und allen äusseren Kommunikationspfaden, also die Brücke zwischen
+lokal und entfernt.
