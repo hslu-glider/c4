@@ -53,9 +53,9 @@ public class PlayBoard implements GameRulez{
         this.gameboard = gameboard;
     }
 
-    public void addListener(ModelListener toAdd) {
+    /*public void addListener(ModelListener toAdd) {
         listeners.add(toAdd);
-    }
+    }*/
 
     @Override
     public boolean didIWin() {
@@ -73,9 +73,9 @@ public class PlayBoard implements GameRulez{
                             winnset[n] = val.gety();
                             n++;
                         }
-                        for (ModelListener hl : listeners) {
+                        /*for (ModelListener hl : listeners) {
                             hl.winnIsSet();
-                        }
+                        }*/
 
                     }
                 }
@@ -112,9 +112,9 @@ public class PlayBoard implements GameRulez{
     @Override
     public void clearboard() {
         playBoard = new Chip[yaxes][xaxes];
-        for (ModelListener hl : listeners) {
+        /*for (ModelListener hl : listeners) {
             hl.boardHasChanged(coppy2dArray());
-        }
+        }*/
     }
 
     @Override
@@ -132,8 +132,16 @@ public class PlayBoard implements GameRulez{
                 }
             }
             playBoard[y][x] = new Chip(player, x, y, playBoard);
+            while(gameboard.isMoving()){
+                try{
+                    Thread.sleep(20);
+                }
+                catch(InterruptedException iex){
+                    
+                }
+            }
             gameboard.insertDisc(x, y, currentuser);
-            
+            gameboard.SwitchPlayer();
             switchPlayer();
             return true;
         }
