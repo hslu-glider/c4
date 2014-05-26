@@ -31,21 +31,21 @@ public class SaveGame {
 
     Chip[][] data;
     int player;
-    
+            
     /**
      * Konstruktor für die Klasse SaveGame, erzeugt ein 2D-Array des Typs Chip und setzt den player auf "menschlicher Spieler"
      * @throws IOException 
      */
     public SaveGame() throws IOException
     {
-        data = new Chip[6][7];
+        data = new Chip[7][6];
         player = 1;                     // player ist standartmaessig auf "menschlicher Spieler" gesetzt       
     }
     
     /**
-     * Methode die den Speichervorgang auslöst, sie ruft die Methode "createFile()" auf
-     * @param data - 2D-Array des Typs Chip
-     * @param player - Integer
+     * Methode welche den Speilstand (2D-Array) und den Spieler am Zug (Integer) übernimmt und den Speichervorgang auslöst.
+     * @param data - Chip[][]
+     * @param player - int
      * @throws IOException 
      */
     public void saveGame(Chip[][] data, int player) throws IOException
@@ -57,7 +57,7 @@ public class SaveGame {
     
     /**
      * Methode zum Laden des Arrays
-     * @return Gibt ein 2D-Array des Typs Chip zurück
+     * @return Chip[][]
      * @throws IOException 
      */
     public Chip[][] loadGame() throws IOException
@@ -67,11 +67,12 @@ public class SaveGame {
     
     /**
      * Methode zum laden des Spielers
-     * @return Gibt einen Integerwert zurück 
+     * @return int 
      * @throws IOException 
      */
     public int loadPlayer() throws IOException
     {
+        System.out.println(readPlayer());
         return readPlayer();
     }
     
@@ -94,9 +95,9 @@ public class SaveGame {
             bw.newLine();
         }
         
-        for(int x = 0; x != 7; x++)
+        for(int y = 0; y != 7; y++)
         {
-            for(int y = 0; y != 6; y++)
+            for(int x = 0; x != 6; x++)
             {
                 if(data[y][x].getOwner() == 1){
                     bw.write("1");
@@ -115,7 +116,7 @@ public class SaveGame {
     
     /**
      * Methode die den Spieler der am Zug ist zurück gibt
-     * @return Integer
+     * @return int
      * @throws IOException 
      */
     private int readPlayer() throws IOException
@@ -132,7 +133,7 @@ public class SaveGame {
     
     /**
      * Methode die die Daten aus der Textdatei in ein 2D-Array schreibt
-     * @return Gibt ein 2D-Array des Typs Chip zurück
+     * @return Chip[][]
      * @throws IOException 
      */
     private Chip[][] readFile() throws IOException
@@ -142,15 +143,15 @@ public class SaveGame {
         
         br.readLine(); // Ueberspringt erste Zeile im File (Player-Zeile)
         
-        for(int x = 0; x != 7; x++)
+        for(int y = 0; y != 6; y++)
         {
-            int y = 0;
+            int x = 0;
             String column = br.readLine();
             StringTokenizer token = new StringTokenizer(column, ";");
         
             while (token.hasMoreTokens()) {
                 data[y][x] = new Chip(Integer.parseInt(token.nextToken()), x, y, data);
-                y++;
+                x++;
             }
         }
         br.close();
