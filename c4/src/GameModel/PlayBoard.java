@@ -141,8 +141,7 @@ public class PlayBoard implements GameRulez
                 }
             }
             playBoard[y][x] = new Chip(player, x , y, playBoard);
-            
-            
+            gameboard.insertDisc(x,y);
             
             for (ModelListener hl : listeners)
             {
